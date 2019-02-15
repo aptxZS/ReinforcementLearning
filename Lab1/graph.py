@@ -1,12 +1,13 @@
 import random
 import sys
 import numpy as np
-graph = {0: {1:2, 4:4},
-1: {2:3},
-2: {3:5, 4:1},
-3: {0:8},
-4: {3:3}}
-# print(graph)
+import matplotlib.pyplot as plt
+
+graph = {0: {1: 2, 4: 4},
+         1: {2: 3},
+         2: {3: 5, 4: 1},
+         3: {0: 8},
+         4: {3: 3}}
 
 
 def constructGraph(nodes, probability):
@@ -68,16 +69,34 @@ def constructShortestPath(s, t, pred):
   return path
 
 
+def constructFrequencyDict(dist):
+  result = {}
+  for i in range(len(dist)):
+    for j in range(len(dist)):
+      if i != j and j > i:
+       key = dist[i][j]
+       if key in result:
+         result[key] += 1
+       else:
+         result[key] = 1
+  return result
+
+
 dist, pred = allPairsShortestPath(graph)
-# print(dist)
-# print(pred)
 path03 = constructShortestPath(0, 3, pred)
-# print(path03)
-graph2, graph2_dict = constructGraph(10, 0.1)
-# print(graph2)
-# print(graph2_dict)
+graph2, graph2_dict = constructGraph(100, 0.3)
 dist, pred = allPairsShortestPath(graph2_dict)
-# print(dist)
-# print(pred)
 path03 = constructShortestPath(0, 2, pred)
 print(path03)
+freq = constructFrequencyDict(dist)
+print(freq)
+# Plotting histogram of frequencies
+X = np.arange(len(freq))
+plt.bar(X, freq.values(), width=0.5)
+plt.xticks(X, freq.keys())
+ymax = max(freq.values()) + 1
+plt.ylim(0, ymax)
+plt.suptitle("Path length frequencies", fontsize=16)
+plt.ylabel('Frequency')
+plt.xlabel('Path lengths')
+plt.show()
