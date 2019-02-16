@@ -79,24 +79,31 @@ def constructFrequencyDict(dist):
          result[key] += 1
        else:
          result[key] = 1
-  return result
+  labels, values = [], []
+  for key in sorted(result):
+    labels.append(int(key))
+    values.append(result[key])
+  return labels, values
 
 
-dist, pred = allPairsShortestPath(graph)
-path03 = constructShortestPath(0, 3, pred)
-graph2, graph2_dict = constructGraph(100, 0.3)
-dist, pred = allPairsShortestPath(graph2_dict)
-path03 = constructShortestPath(0, 2, pred)
-print(path03)
-freq = constructFrequencyDict(dist)
-print(freq)
-# Plotting histogram of frequencies
-X = np.arange(len(freq))
-plt.bar(X, freq.values(), width=0.5)
-plt.xticks(X, freq.keys())
-ymax = max(freq.values()) + 1
-plt.ylim(0, ymax)
-plt.suptitle("Path length frequencies", fontsize=16)
-plt.ylabel('Frequency')
-plt.xlabel('Path lengths')
-plt.show()
+def plotResults(labels, values, nodes, prob):
+  X = np.arange(len(values))
+  plt.bar(X, values, width=0.5)
+  plt.xticks(X, labels)
+  ymax = max(values) + 1
+  plt.ylim(0, ymax)
+  plt.suptitle("Path length frequencies ({}, {})".format(nodes, prob), fontsize=16)
+  plt.ylabel('Frequency')
+  plt.xlabel('Path lengths')
+  plt.show()
+
+
+random.seed(1)
+nodes = 100
+probabilities = [0.02, 0.05, 0.08, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
+for prob in probabilities:
+  print(prob)
+  graph2, graph2_dict = constructGraph(nodes, prob)
+  dist, pred = allPairsShortestPath(graph2_dict)
+  labels, values = constructFrequencyDict(dist)
+  plotResults(labels, values, nodes, prob)
