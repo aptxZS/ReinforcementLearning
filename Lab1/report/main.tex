@@ -56,20 +56,9 @@
 %
 
 \section{Fibonacci numbers}
-Fibonacci stuff
-\begin{itemize}
-\item Show recursion fibonacci expansion
-\item Add pseudo code for recursive fibonacci
-\item include plots of recursive vs dynamic programming fibonacci
-  solvers
-\item describe why dynamic programming is a better approach (computing
-  same subsolutions only ones).
-\end{itemize}
-
 Fibonacci numbers are a mathematical sequence which values are
 determined by the recurrence relation \ref{fibonaccieq}
-\cite{fib_num}. 
-
+\cite{fib_num}.
 \begin{equation}\label{fibonaccieq}
   F_n=\begin{cases}
   0 & \text{if $n=0$}.\\
@@ -77,6 +66,35 @@ determined by the recurrence relation \ref{fibonaccieq}
   F_{n-1} + F_{n-2} & \text{otherwise}.
   \end{cases}
 \end{equation}
+The calculation of the fibonacci sequence shows the optimal
+substructure property. This means that the end result can be seen as a
+composition of solving subproblems of the same type using the same
+procedure. A plain recursion approach will generate, in the winding
+phase, a recursive tree of subproblems until the problem cannot be
+decomposed any further (the leaves of the tree). In the unwinding
+phase the generated solution of the subproblems are combined to solve
+a bigger subproblem. The solution is calculated when all the
+subproblems are solved and combined together. We can observe a
+recursion tree of the fifth fibonacci sequence number in figure \ref{fig1}.
+\begin{figure}
+\includegraphics[width=\textwidth]{recursion.png}
+\caption{Recursion tree of fibonacci sequence calculation} \label{fig1}
+\end{figure}
+The recursion generates and traverses the tree as a depth first search
+algorithm. We can observe from figure \ref{fig1} that the very same
+subproblems are generated and solved multiple times. We can observe
+that the subtrees that have a gray node as root have already been
+computed \cite{fibo}. The dynamic programming paradigm solves exactly
+this kind of problem by exploiting memoization of the partial
+solutions \cite{dprogramming}. When a subproblem is solved its
+solution is cached and reused once the same subproblem occurs. The
+dynamic programming optimization drastically improves the complexity
+time. The plain recursion approach runs in exponential time complexity,
+$O(2^n)$, while the dynamic programming method has a linear time
+complexity, $O(n)$. The space complexity of both the algorithms is
+linear, $O(n)$, since the tree is traversed in a depth first search
+like manner. The code of both methods can be seen in subsection
+\ref{fibonacci_code} of appendix\ref{appendix}.
 
 \section{Graph search}
 Graph search shit
@@ -117,7 +135,7 @@ En.wikipedia.org. (2019). Fibonacci number. [online] Available at: \url{https://
 \section{Appendix A: source code}\label{appendix}
 This appendix section contains the source code of the implemented programs.
 
-\subsection{fibonacci.py}
+\subsection{fibonacci.py}\label{fibonacci_code}
 \lstinputlisting[language=Python]{../fibonacci.py}
 
 \end{document}
