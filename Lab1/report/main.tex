@@ -1,0 +1,111 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+\usepackage{listings}
+\usepackage{color}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+%  frame=single,
+  breaklines=true,
+}
+
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Reinforcement learning - Lab 1}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Dimitri Diomaiuta - 30598109}
+%
+% \authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{University of Southampton}
+%% \institute{Princeton University, Princeton NJ 08544, USA \and
+%% Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+%% \email{lncs@springer.com}\\
+%% \url{http://www.springer.com/gp/computer-science/lncs} \and
+%% ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+%% \email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+%% \begin{abstract}
+%% Searching is one of the oldest artificial intelligence techniques used for problem solving. In this paper we analyze the results and scalability of both uninformed and informed search algorithms.
+%% %\keywords{First keyword  \and Second keyword \and Another keyword.}
+%% \end{abstract}
+%
+%
+%
+
+\section{Fibonacci}
+Fibonacci stuff
+\begin{itemize}
+\item Show recursion fibonacci expansion
+\item Add pseudo code for recursive fibonacci
+\item include plots of recursive vs dynamic programming fibonacci
+  solvers
+\item describe why dynamic programming is a better approach (computing
+  same subsolutions only ones).
+\end{itemize}
+    
+
+
+\section{Graph search}
+Graph search shit
+\begin{itemize}
+\item Describe what is the purpose of using dynamic programming to
+  calculate shortes path
+\item Show plots of histograms distribution of node distances (how
+  many steps are taken to reach the other nodes)
+\end{itemize}
+
+\section{Mountain car}
+Mountain car shit
+\begin{itemize}
+\item Explain what type of reinforcement learning problem this is
+  (continous problem rendered as discrete to exploit the Q-table)
+\item Explain what happens when changing the exploration rate
+\item Show plots to support the claims
+\end{itemize}
+
+
+\section{Appendix A: source code}\label{appendix}
+This appendix section contains the source code of the program:
+\begin{itemize}
+\item Compile with: \textit{javac *.java}
+\item Run with: \textit{java -Xss84m Main}
+\end{itemize}
+
+%% \subsection{Main.java}
+%% \lstinputlisting[language=Java]{../src/Main.java}
+
+%% \subsection{Puzzle.java}
+%% \lstinputlisting[language=Java]{../src/Puzzle.java}
+
+%% \subsection{PuzzleManhattanComparator.java}
+%% \lstinputlisting[language=Java]{../src/PuzzleManhattanComparator.java}
+
+%% \subsection{SearchState.java}
+%% \lstinputlisting[language=Java]{../src/SearchState.java}
+
+%% \subsection{Tile.java}
+%% \lstinputlisting[language=Java]{../src/Tile.java}
+
+\end{document}
