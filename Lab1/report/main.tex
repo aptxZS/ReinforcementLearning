@@ -4,6 +4,7 @@
 %
 \documentclass[runningheads]{llncs}
 %
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[toc,page]{appendix}
 \usepackage{listings}
@@ -54,7 +55,7 @@
 %
 %
 
-\section{Fibonacci}
+\section{Fibonacci numbers}
 Fibonacci stuff
 \begin{itemize}
 \item Show recursion fibonacci expansion
@@ -64,8 +65,18 @@ Fibonacci stuff
 \item describe why dynamic programming is a better approach (computing
   same subsolutions only ones).
 \end{itemize}
-    
 
+Fibonacci numbers are a mathematical sequence which values are
+determined by the recurrence relation \ref{fibonaccieq}
+\cite{fib_num}. 
+
+\begin{equation}\label{fibonaccieq}
+  F_n=\begin{cases}
+  0 & \text{if $n=0$}.\\
+  1 & \text{if $n=1$}.\\
+  F_{n-1} + F_{n-2} & \text{otherwise}.
+  \end{cases}
+\end{equation}
 
 \section{Graph search}
 Graph search shit
@@ -86,26 +97,27 @@ Mountain car shit
 \end{itemize}
 
 
+\begin{thebibliography}{8}
+
+\bibitem{rlbook}
+Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An introduction.
+
+\bibitem{dprogramming}
+En.wikipedia.org. (2019). Dynamic programming. [online] Available at: \url{https://en.wikipedia.org/wiki/Dynamic\_programming} [Accessed 16 Feb. 2019].
+
+\bibitem{fibo}
+Weibel, D. (2019). Recursion and Dynamic Programming. [online] Weibeld.net. Available at: \url{http://weibeld.net/algorithms/recursion.html} [Accessed 16 Feb. 2019].
+
+\bibitem{fib_num}
+En.wikipedia.org. (2019). Fibonacci number. [online] Available at: \url{https://en.wikipedia.org/wiki/Fibonacci\_number} [Accessed 16 Feb. 2019].
+
+\end{thebibliography}
+
+
 \section{Appendix A: source code}\label{appendix}
-This appendix section contains the source code of the program:
-\begin{itemize}
-\item Compile with: \textit{javac *.java}
-\item Run with: \textit{java -Xss84m Main}
-\end{itemize}
+This appendix section contains the source code of the implemented programs.
 
-%% \subsection{Main.java}
-%% \lstinputlisting[language=Java]{../src/Main.java}
-
-%% \subsection{Puzzle.java}
-%% \lstinputlisting[language=Java]{../src/Puzzle.java}
-
-%% \subsection{PuzzleManhattanComparator.java}
-%% \lstinputlisting[language=Java]{../src/PuzzleManhattanComparator.java}
-
-%% \subsection{SearchState.java}
-%% \lstinputlisting[language=Java]{../src/SearchState.java}
-
-%% \subsection{Tile.java}
-%% \lstinputlisting[language=Java]{../src/Tile.java}
+\subsection{fibonacci.py}
+\lstinputlisting[language=Python]{../fibonacci.py}
 
 \end{document}
