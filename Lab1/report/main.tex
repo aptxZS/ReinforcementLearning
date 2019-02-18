@@ -91,7 +91,7 @@ solution is cached and reused once the same subproblem occurs. The
 dynamic programming optimization drastically improves the complexity
 time. The plain recursion approach runs in exponential time complexity,
 $O(2^n)$, while the dynamic programming method has a linear time
-complexity, $O(n)$. The space complexity of both the algorithms is
+complexity, $O(n)$ \cite{fibo}. The space complexity of both the algorithms is
 linear, $O(n)$, since the tree is traversed in a depth first search
 like manner. The code of both methods can be seen in subsection
 \ref{fibonacci_code} of appendix\ref{appendix}.
@@ -100,7 +100,7 @@ like manner. The code of both methods can be seen in subsection
 Graph search shit
 \begin{itemize}
 \item Describe what is the purpose of using dynamic programming to
-  calculate shortes path
+  calculate shortest path
 \item Show plots of histograms distribution of node distances (how
   many steps are taken to reach the other nodes)
 \end{itemize}
@@ -137,5 +137,8 @@ This appendix section contains the source code of the implemented programs.
 
 \subsection{fibonacci.py}\label{fibonacci_code}
 \lstinputlisting[language=Python]{../fibonacci.py}
+
+\subsection{graph.py}\label{fibonacci_code}
+\lstinputlisting[language=Python]{../graph.py}
 
 \end{document}
