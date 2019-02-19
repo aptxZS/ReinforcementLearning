@@ -94,16 +94,49 @@ $O(2^n)$, while the dynamic programming method has a linear time
 complexity, $O(n)$ \cite{fibo}. The space complexity of both the algorithms is
 linear, $O(n)$, since the tree is traversed in a depth first search
 like manner. The code of both methods can be seen in subsection
-\ref{fibonacci_code} of appendix\ref{appendix}.
+\ref{graph_code} of appendix\ref{appendix}.
 
-\section{Graph search}
-Graph search shit
-\begin{itemize}
-\item Describe what is the purpose of using dynamic programming to
-  calculate shortest path
-\item Show plots of histograms distribution of node distances (how
-  many steps are taken to reach the other nodes)
-\end{itemize}
+\section{Shortest path problem}
+The shortest path problem is another type of problem that has the
+optimal substructure property \cite{dijkstra}. The Dijkstra's
+algorithm is one of the most used algorithms for the purpose of
+calculating the shortest path between a source and a target
+node. Splitting the shortest path problem in subproblems results in
+calculating the shortest paths between the source node and the nodes
+that stand in the way to reach the target node. Following the dynamic
+programming approach, Dijkstra algorithm uses memoization to store the
+solutions of the subproblems. In this section we extended the
+described algorithm to calculate the shortest paths for all the nodes
+in a graph. Each node is visited in an iterative manner and the
+subproblem solutions are stored in a matrix. We tested the program on
+a 100 nodes graph with uniform cost connections (path cost 1) with
+different probabilities of occurrence. Figures \ref{hist1},
+\ref{hist2} \ref{hist3} and \ref{hist4} show the shortest pairwise
+distances distribution under different probability distributions. As
+we can observe from the histograms, the higher the probability of
+connecting the shortest the path between each node is. 
+The code of the program can be seen in subsection \ref{graph_code} of
+appendix \ref{appendix}.
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist1.png}
+\caption{Histogram of shortest pairwise distances for probability 0.02
+and 0.05} \label{hist1}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist2.png}
+\caption{Histogram of shortest pairwise distances for probability 0.08
+and 0.1} \label{hist2}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist3.png}
+\caption{Histogram of shortest pairwise distances for probability 0.2
+and 0.3} \label{hist3}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist4.png}
+\caption{Histogram of shortest pairwise distances for probability 0.5
+and 0.7} \label{hist4}
+\end{figure}
 
 \section{Mountain car}
 Mountain car shit
@@ -129,6 +162,9 @@ Weibel, D. (2019). Recursion and Dynamic Programming. [online] Weibeld.net. Avai
 \bibitem{fib_num}
 En.wikipedia.org. (2019). Fibonacci number. [online] Available at: \url{https://en.wikipedia.org/wiki/Fibonacci\_number} [Accessed 16 Feb. 2019].
 
+\bibitem{dijkstra}
+Sniedovich, M., 2006. Dijkstra's algorithm revisited: the dynamic programming connexion. Control and cybernetics, 35(3), pp.599-620.
+
 \end{thebibliography}
 
 
@@ -138,7 +174,7 @@ This appendix section contains the source code of the implemented programs.
 \subsection{fibonacci.py}\label{fibonacci_code}
 \lstinputlisting[language=Python]{../fibonacci.py}
 
-\subsection{graph.py}\label{fibonacci_code}
+\subsection{graph.py}\label{graph_code}
 \lstinputlisting[language=Python]{../graph.py}
 
 \end{document}
