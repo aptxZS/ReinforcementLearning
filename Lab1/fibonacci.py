@@ -20,5 +20,5 @@ def fibonacci_recursive(n):
 
 print(fibonacci_dynamic(10))
 print(fibonacci_dynamic(30))
-print(fibonacci_dynamic(10))
+print(fibonacci_recursive(10))
 print(fibonacci_recursive(30))
