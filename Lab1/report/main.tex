@@ -113,8 +113,8 @@ a 100 nodes graph with uniform cost connections (path cost 1) with
 different probabilities of occurrence. Figures \ref{hist1},
 \ref{hist2} \ref{hist3} and \ref{hist4} show the shortest pairwise
 distances distribution under different probability distributions. As
-we can observe from the histograms, the higher the probability of
-connecting the shortest the path between each node is. 
+we can observe from the histograms, increasing the connection
+probability decreases the average shortest path cost between each node.
 The code of the program can be seen in subsection \ref{graph_code} of
 appendix \ref{appendix}.
 \begin{figure}
@@ -143,20 +143,20 @@ The mountain car problem is a classic reinforcement learning
 problem. The agent is a car in a valley and the its goal is to drive
 to the top of the mountain. The problem is that the gravity
 acceleration is stronger than the car engine, creating a learning
-challenge for the agent \cite{rlbook}. The agent's goal is to learn an
+challenge for the agent \cite{rlbook}. The agent's goal is to learn
 a policy to climb the mountain and reach the goal in the shortest
 possible time. The state space is described by two continous
 variables, namely position and velocity. The agent can choose between
 three actions: move right (towards the goal), move left (opposite
 to the goal), stay still. The problem can be reduced to a finite
-Markov decision process one where Q-learning algorithm can be used to
+Markov decision process where Q-learning algorithm can be used to
 find the optimal policy to choose an action for a given state. The
 value of an action (\textit{right, left, no move}) for a given state
-(\textit{position x velocity}) are kept in a Q-table. This value gets
+(\textit{position and velocity}) are kept in a Q-table. This value gets
 updated by following the Q-learning value iteration update, see equation \ref{valit}.
 \begin{equation}\label{valit}
 Q(S_t, A_t) = (1 - \alpha) \cdot Q(S_t, A_t) + \alpha \cdot (R_t + \gamma
-\cdot argmaxQ(S_{t+1}, A)) 
+\cdot maxQ(S_{t+1}, A)) 
 \end{equation}
 The Q-learning algorithm works with discrete states. The first step,
 hence, is to apply state space discretization using tile coding to map
@@ -164,13 +164,13 @@ continous variables to discrete ones. At each time step the agent's
 state is translated to a discrete one in order to use Q-learning to
 update that state's value. Another important aspect of solving the
 mountain car problem is the exploration probability variable. This
-variable describe the probability of taking a random action instead of
+variable describes the probability of taking a random action instead of
 the optimal one. The exploration probability variable importance is
 given by the fact that allows the agent to search a larger portion of
 the search state space that can include a better policy. We test the
-exploration versus exploitation characteristic by changing the
+exploration versus exploitation tradeoff by changing the
 exploration rate and analyze the action value evolution of a specific state
-(\textit{position x velocity} through episodes. Figures \ref{exp1} and
+(\textit{position and velocity}) through episodes. Figures \ref{exp1} and
 \ref{exp2} show how different exploration probabilities affect the
 action values. 
 \begin{figure}
