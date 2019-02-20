@@ -146,6 +146,27 @@ Mountain car shit
 \item Explain what happens when changing the exploration rate
 \item Show plots to support the claims
 \end{itemize}
+The mountain car problem is a classic reinforcement learning
+problem. The agent is a car in a valley and the its goal is to drive
+to the top of the mountain. The problem is that the gravity
+acceleration is stronger than the car engine, creating a learning
+challenge for the agent \cite{rlbook}. The agent's goal is to learn an
+a policy to climb the mountain and reach the goal in the shortest
+possible time. The state space is described by two continous
+variables, namely position and velocity. The agent can choose between
+three actions: move right (towards the goal), move left (opposite
+to the goal), stay still. The problem can be reduced to a finite
+Markov decision process one where Q-learning algorithm can be used to
+find the optimal policy to choose an action for a given state. The
+value of an action (\textit{right, left, no move}) for a given state
+(\textit{position x velocity}) are kept in a Q-table. This value gets
+updated by following the Q-learning value iteration update, see equation \ref{valit}.
+\begin{equation}\label{valit}
+Q(S_t, A_t) = (1 - \alpha) \cdot Q(S_t, A_t) + \alpha \cdot (R_t + \gamma
+\cdot argmaxQ(S_{t+1}, A)) 
+\end{equation}
+
+
 
 
 \begin{thebibliography}{8}
