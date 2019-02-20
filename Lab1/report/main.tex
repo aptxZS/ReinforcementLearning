@@ -139,13 +139,6 @@ and 0.7} \label{hist4}
 \end{figure}
 
 \section{Mountain car}
-Mountain car shit
-\begin{itemize}
-\item Explain what type of reinforcement learning problem this is
-  (continous problem rendered as discrete to exploit the Q-table)
-\item Explain what happens when changing the exploration rate
-\item Show plots to support the claims
-\end{itemize}
 The mountain car problem is a classic reinforcement learning
 problem. The agent is a car in a valley and the its goal is to drive
 to the top of the mountain. The problem is that the gravity
@@ -165,9 +158,38 @@ updated by following the Q-learning value iteration update, see equation \ref{va
 Q(S_t, A_t) = (1 - \alpha) \cdot Q(S_t, A_t) + \alpha \cdot (R_t + \gamma
 \cdot argmaxQ(S_{t+1}, A)) 
 \end{equation}
-
-
-
+The Q-learning algorithm works with discrete states. The first step,
+hence, is to apply state space discretization using tile coding to map
+continous variables to discrete ones. At each time step the agent's
+state is translated to a discrete one in order to use Q-learning to
+update that state's value. Another important aspect of solving the
+mountain car problem is the exploration probability variable. This
+variable describe the probability of taking a random action instead of
+the optimal one. The exploration probability variable importance is
+given by the fact that allows the agent to search a larger portion of
+the search state space that can include a better policy. We test the
+exploration versus exploitation characteristic by changing the
+exploration rate and analyze the action value evolution of a specific state
+(\textit{position x velocity} through episodes. Figures \ref{exp1} and
+\ref{exp2} show how different exploration probabilities affect the
+action values. 
+\begin{figure}
+\includegraphics[width=\textwidth]{img/exp1.png}
+\caption{Action value evolution for exploration probability 0 and 0.05} \label{exp1}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/exp2.png}
+\caption{Action value evolution for exploration probability 0.1 and 0.5} \label{exp2}
+\end{figure}
+From our experiments we can deduct that an exploration probability of
+$0$ results in a greedy action selection with an high bias. On the
+other hand, a really high probability, results in evaluating all the
+actions for a given state in the same manner. We can, in fact,
+observe, that with $\epsilon = 0.5$ the action value evolution curves
+follow the same pattern. This results resemble the underfitting and
+overfitting errors that occur in supervised machine learning
+problems. In this case we can conclude that a rate of $\epsilon =
+0.05$ or $\epsilon = 0.1$ perform better in the mountain car problem.
 
 \begin{thebibliography}{8}
 
@@ -175,7 +197,7 @@ Q(S_t, A_t) = (1 - \alpha) \cdot Q(S_t, A_t) + \alpha \cdot (R_t + \gamma
 Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An introduction.
 
 \bibitem{dprogramming}
-En.wikipedia.org. (2019). Dynamic programming. [online] Available at: \url{https://en.wikipedia.org/wiki/Dynamic\_programming} [Accessed 16 Feb. 2019].
+Cormen, T.H., Leiserson, C.E., Rivest, R.L. and Stein, C., 2001. Introduction to algorithms second edition. The Knuth-Morris-Pratt Algorithm, year.
 
 \bibitem{fibo}
 Weibel, D. (2019). Recursion and Dynamic Programming. [online] Weibeld.net. Available at: \url{http://weibeld.net/algorithms/recursion.html} [Accessed 16 Feb. 2019].
