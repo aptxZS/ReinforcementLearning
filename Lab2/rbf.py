@@ -55,16 +55,18 @@ print(np.linalg.norm(y-yh_lin), np.linalg.norm(y-yh_rbf))
 N = 1000
 alpha = 0.0000001
 w = np.random.randn(U.shape[1], 1)
+w.fill(-2)
 loss_vec = []
 weight_vec = []
 for i in range(N):
     p = np.random.randint(0, U.shape[0])
     w = w - alpha * grad_cost_func(w, U[p:p+1], y[p:p+1])
-    loss_vec.append(cost_func(w, U[p:p+1], y[p:p+1]))
-    weight_vec.append(w[0])
+    loss_vec.append((cost_func(w, U[p:p+1], y[p:p+1])).item(0))
+    weight_vec.append(w.item(0))
 
 print(w)
 plt.scatter(weight_vec, loss_vec)
+plt.plot(weight_vec, loss_vec)
 plt.xlabel("initial w0: {} last w0: {}".format(weight_vec[0], weight_vec[-1]))
 plt.ylabel("Loss")
 plt.show()
