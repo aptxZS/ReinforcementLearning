@@ -65,4 +65,6 @@ for i in range(N):
 
 print(w)
 plt.scatter(weight_vec, loss_vec)
+plt.xlabel("initial w0: {} last w0: {}".format(weight_vec[0], weight_vec[-1]))
+plt.ylabel("Loss")
 plt.show()
