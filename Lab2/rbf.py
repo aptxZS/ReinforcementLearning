@@ -49,7 +49,8 @@ for J in all_J:
     # Solve linear regression, plot target and prediction
     w = (np.linalg.inv(X.T*X)) * X.T * y
     yh_lin = X*w
-    plt.plot(y, yh_lin, '.', Color='magenta')
+    plt.suptitle("Target and predicted values J={}".format(J), fontsize=12)
+    plt.plot(y, yh_lin, '.', Color='magenta', label='target', alpha=0.3)
     # J = 20basis functions obtained by k-means clustering
     # sigma set to standard deviation of entire data
     kmeans = KMeans(n_clusters=J, random_state=0).fit(X)
@@ -59,7 +60,8 @@ for J in all_J:
     # Solve RBF model, predict and plot via Moore-Penrose inverse
     w = np.dot((np.linalg.inv(np.dot(U.T, U))), U.T) * y
     yh_rbf = np.dot(U, w)
-    plt.plot(y, yh_rbf, '.', Color='cyan')
+    plt.plot(y, yh_rbf, '.', Color='cyan', label='predicted', alpha=0.3)
+    plt.legend(loc='upper right')
     plt.show()
     print(np.linalg.norm(y-yh_lin), np.linalg.norm(y-yh_rbf))
 
@@ -75,7 +77,7 @@ for J in all_J:
         w = w - alpha * grad_cost_func(w, U[p:p+1], y[p:p+1])
         loss_vec.append((cost_func(w, U[p:p+1], y[p:p+1])).item(0))
         weight_vec.append(w.item(0))
-    plt.suptitle("SGD loss for J={}".format(J), fontsize=16)
+    plt.suptitle("SGD loss for J={}".format(J), fontsize=12)
     plt.scatter(weight_vec, loss_vec)
     plt.plot(weight_vec, loss_vec)
     plt.xlabel("w0".format(weight_vec[0], weight_vec[-1]))
@@ -87,7 +89,9 @@ for J in all_J:
     test_error.append(np.sqrt(2 * res.item(0) / N))
     print("J: {} error: {}".format(J, res))
 print("res", test_error)
-plt.suptitle("Testing set RMSE".format(J), fontsize=16)
+plt.suptitle("Testing set RMSE".format(J), fontsize=12)
 plt.scatter(all_J, test_error)
 plt.plot(all_J, test_error)
+plt.xlabel("J values")
+plt.ylabel("RMSE")
 plt.show()
