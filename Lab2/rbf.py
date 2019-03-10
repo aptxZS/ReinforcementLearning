@@ -33,8 +33,9 @@ def construct_design_matrix(X, N, J):
 
 
 np.random.seed(1)
-all_J = [1, 2, 3, 4, 5, 6, 7]
+all_J = [1, 2, 3, 4, 5, 6, 10]
 test_error = []
+train_error = []
 for J in all_J:
     rawData = np.genfromtxt('/home/dimitri/Documents/SOTON/ReinforcementLearning/Assignments/Lab2/winequality-red.csv', delimiter=";")
     N, pp1 = rawData.shape
@@ -83,7 +84,9 @@ for J in all_J:
     plt.xlabel("w0".format(weight_vec[0], weight_vec[-1]))
     plt.ylabel("Loss")
     plt.show()
-
+    #Computing train_error
+    train_error.append(np.sqrt(2 * loss_vec[-1] / N))
+    # Computing test_error
     U_test = construct_design_matrix(X_test, X_test.shape[0], J)
     res = cost_func(w, U_test, y_test)
     test_error.append(np.sqrt(2 * res.item(0) / N))
@@ -91,7 +94,10 @@ for J in all_J:
 print("res", test_error)
 plt.suptitle("Testing set RMSE".format(J), fontsize=12)
 plt.scatter(all_J, test_error)
-plt.plot(all_J, test_error)
+plt.plot(all_J, test_error, label='test')
+plt.scatter(all_J, train_error)
+plt.plot(all_J, train_error, label='train')
 plt.xlabel("J values")
 plt.ylabel("RMSE")
+plt.legend(loc='upper right')
 plt.show()
