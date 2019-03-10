@@ -23,7 +23,8 @@ def cost_func(theta, X, y):
     return (1/(2 * M)) * (hypothesis(theta, X) - y).T @ (hypothesis(theta, X) - y)
 
 
-rawData = np.genfromtxt('/home/dimitri/Documents/SOTON/ReinforcementLearning/Assignments/Lab2/housing.data')
+np.random.seed(1)
+rawData = np.genfromtxt('/home/dimitri/Documents/SOTON/ReinforcementLearning/Assignments/Lab2/winequality-red.csv', delimiter=";")
 N, pp1 = rawData.shape
 # Last column is target
 X = np.matrix(rawData[:, 0:pp1-1])
@@ -67,6 +68,6 @@ for i in range(N):
 print(w)
 plt.scatter(weight_vec, loss_vec)
 plt.plot(weight_vec, loss_vec)
-plt.xlabel("initial w0: {} last w0: {}".format(weight_vec[0], weight_vec[-1]))
+plt.xlabel("w0".format(weight_vec[0], weight_vec[-1]))
 plt.ylabel("Loss")
 plt.show()
