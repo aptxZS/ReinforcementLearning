@@ -92,7 +92,7 @@ for J in all_J:
     test_error.append(np.sqrt(2 * res.item(0) / N))
     print("J: {} error: {}".format(J, res))
 print("res", test_error)
-plt.suptitle("Testing set RMSE".format(J), fontsize=12)
+plt.suptitle("Train and test set RMSE".format(J), fontsize=12)
 plt.scatter(all_J, test_error)
 plt.plot(all_J, test_error, label='test')
 plt.scatter(all_J, train_error)
