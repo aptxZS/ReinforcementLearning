@@ -1,0 +1,263 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+\usepackage{listings}
+\usepackage{color}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+%  frame=single,
+  breaklines=true,
+}
+
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Reinforcement learning - Lab 2}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Dimitri Diomaiuta - 30598109}
+%
+% \authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{University of Southampton}
+%% \institute{Princeton University, Princeton NJ 08544, USA \and
+%% Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+%% \email{lncs@springer.com}\\
+%% \url{http://www.springer.com/gp/computer-science/lncs} \and
+%% ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+%% \email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+%% \begin{abstract}
+%% Searching is one of the oldest artificial intelligence techniques used for problem solving. In this paper we analyze the results and scalability of both uninformed and informed search algorithms.
+%% %\keywords{First keyword  \and Second keyword \and Another keyword.}
+%% \end{abstract}
+%
+%
+%
+\section{Radial basis function}\label{RBF}
+In this paper we analyze how to use radial basis function (RBF) to
+solve a linear regression and a reinforcement learning problem. A RBF
+is a real-valued function $\phi$ whose value depends on the distance
+from a point called origin such that $\phi(x) = \phi(||x||)$. RBF
+models are particularly useful to generate basis functions from
+feature vectors in order to solve function approximation problems via
+linear combination. The output of the linear combination is described
+by equation \ref{rbf_linear_comb}.
+\begin{equation}\label{rbf_linear_comb}
+  f(x) = \sum_{j=1}^{J}w_j\phi(||x-c_j||)
+\end{equation}
+The radial basis function is usually assumed to be Gaussian and,
+hence, to be calculated as shown in equation \ref{rbf_gaussian}
+\cite{rlbook}.
+\begin{equation}\label{rbf_gaussian}
+\phi(||x-c_j||) = \exp\left(-\frac{||s-c_j||^2}{2\sigma^2_j}\right)
+\end{equation}
+As we can observe from equation \ref{rbf_linear_comb}, $J$ defines the
+number of centers and hence the number of radial basis functions used
+in the linear combination, and $w_j$ the weights for each function.
+
+\section{Linear regression with RBF}
+In this section we solve a linear regression problem by exploiting the
+RBF model described in section \ref{RBF}. We solve the problem in a
+standard manner as follows:
+\begin{itemize}
+\item Load a raw dataset
+\item Divide into train and test set
+\item Given a $J$ compute the design matrix of features using a RBF model
+\item Learn the weight vector by stochastic gradient descent on the train set
+\item Compute the root mean squared error of the model tested
+  on the test set
+\item Compare the model with one deriving the weight vector by xusing the
+  pseudoinverse.
+\end{itemize}
+We performed the steps for different number of radial basis function
+($J$) to analyze which one is the model that generalizes better the
+pattern of the input data. The input dataset we used for the task is
+the UCI \textit{red wine quality} dataset \cite{wine_data}.
+
+\section{Fibonacci numbers}
+Fibonacci numbers are a mathematical sequence which values are
+determined by the recurrence relation \ref{fibonaccieq}
+\cite{fib_num}.
+\begin{equation}\label{fibonaccieq}
+  F_n=\begin{cases}
+  0 & \text{if $n=0$}.\\
+  1 & \text{if $n=1$}.\\
+  F_{n-1} + F_{n-2} & \text{otherwise}.
+  \end{cases}
+\end{equation}
+The calculation of the fibonacci sequence shows the optimal
+substructure property. This means that the end result can be seen as a
+composition of solving subproblems of the same type using the same
+procedure. A plain recursion approach will generate, in the winding
+phase, a recursive tree of subproblems until the problem cannot be
+decomposed any further (the leaves of the tree). In the unwinding
+phase the generated solution of the subproblems are combined to solve
+a bigger subproblem. The solution is calculated when all the
+subproblems are solved and combined together. We can observe a
+recursion tree of the fifth fibonacci sequence number in figure \ref{fig1}.
+\begin{figure}
+\includegraphics[width=\textwidth]{recursion.png}
+\caption{Recursion tree of fibonacci sequence calculation} \label{fig1}
+\end{figure}
+The recursion generates and traverses the tree as a depth first search
+algorithm. We can observe from figure \ref{fig1} that the very same
+subproblems are generated and solved multiple times. We can observe
+that the subtrees that have a gray node as root have already been
+computed \cite{fibo}. The dynamic programming paradigm solves exactly
+this kind of problem by exploiting memoization of the partial
+solutions \cite{dprogramming}. When a subproblem is solved its
+solution is cached and reused once the same subproblem occurs. The
+dynamic programming optimization drastically improves the complexity
+time. The plain recursion approach runs in exponential time complexity,
+$O(2^n)$, while the dynamic programming method has a linear time
+complexity, $O(n)$ \cite{fibo}. The space complexity of both the algorithms is
+linear, $O(n)$, since the tree is traversed in a depth first search
+like manner. The code of both methods can be seen in subsection
+\ref{graph_code} of appendix\ref{appendix}.
+
+\section{Shortest path problem}
+The shortest path problem is another type of problem that has the
+optimal substructure property \cite{dijkstra}. The Dijkstra's
+algorithm is one of the most used algorithms for the purpose of
+calculating the shortest path between a source and a target
+node. Splitting the shortest path problem in subproblems results in
+calculating the shortest paths between the source node and the nodes
+that stand in the way to reach the target node. Following the dynamic
+programming approach, Dijkstra algorithm uses memoization to store the
+solutions of the subproblems. In this section we extended the
+described algorithm to calculate the shortest paths for all the nodes
+in a graph. Each node is visited in an iterative manner and the
+subproblem solutions are stored in a matrix. We tested the program on
+a 100 nodes graph with uniform cost connections (path cost 1) with
+different probabilities of occurrence. Figures \ref{hist1},
+\ref{hist2} \ref{hist3} and \ref{hist4} show the shortest pairwise
+distances distribution under different probability distributions. As
+we can observe from the histograms, increasing the connection
+probability decreases the average shortest path cost between each node.
+The code of the program can be seen in subsection \ref{graph_code} of
+appendix \ref{appendix}.
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist1.png}
+\caption{Histogram of shortest pairwise distances for probability 0.02
+and 0.05} \label{hist1}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist2.png}
+\caption{Histogram of shortest pairwise distances for probability 0.08
+and 0.1} \label{hist2}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist3.png}
+\caption{Histogram of shortest pairwise distances for probability 0.2
+and 0.3} \label{hist3}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/hist4.png}
+\caption{Histogram of shortest pairwise distances for probability 0.5
+and 0.7} \label{hist4}
+\end{figure}
+
+\section{Mountain car}
+The mountain car problem is a classic reinforcement learning
+problem. The agent is a car in a valley and the its goal is to drive
+to the top of the mountain. The problem is that the gravity
+acceleration is stronger than the car engine, creating a learning
+challenge for the agent \cite{rlbook}. The agent's goal is to learn
+a policy to climb the mountain and reach the goal in the shortest
+possible time. The state space is described by two continous
+variables, namely position and velocity. The agent can choose between
+three actions: move right (towards the goal), move left (opposite
+to the goal), stay still. The problem can be reduced to a finite
+Markov decision process where Q-learning algorithm can be used to
+find the optimal policy to choose an action for a given state. The
+value of an action (\textit{right, left, no move}) for a given state
+(\textit{position and velocity}) are kept in a Q-table. This value gets
+updated by following the Q-learning value iteration update, see equation \ref{valit}.
+\begin{equation}\label{valit}
+Q(S_t, A_t) = (1 - \alpha) \cdot Q(S_t, A_t) + \alpha \cdot (R_t + \gamma
+\cdot maxQ(S_{t+1}, A)) 
+\end{equation}
+The Q-learning algorithm works with discrete states. The first step,
+hence, is to apply state space discretization using tile coding to map
+continous variables to discrete ones. At each time step the agent's
+state is translated to a discrete one in order to use Q-learning to
+update that state's value. Another important aspect of solving the
+mountain car problem is the exploration probability variable. This
+variable describes the probability of taking a random action instead of
+the optimal one. The exploration probability variable importance is
+given by the fact that allows the agent to search a larger portion of
+the search state space that can include a better policy. We test the
+exploration versus exploitation tradeoff by changing the
+exploration rate and analyze the action value evolution of a specific state
+(\textit{position and velocity}) through episodes. Figures \ref{exp1} and
+\ref{exp2} show how different exploration probabilities affect the
+action values. 
+\begin{figure}
+\includegraphics[width=\textwidth]{img/exp1.png}
+\caption{Action value evolution for exploration probability 0 and 0.05} \label{exp1}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/exp2.png}
+\caption{Action value evolution for exploration probability 0.1 and 0.5} \label{exp2}
+\end{figure}
+From our experiments we can deduct that an exploration probability of
+$0$ results in a greedy action selection with an high bias. On the
+other hand, a really high probability, results in evaluating all the
+actions for a given state in the same manner. We can, in fact,
+observe, that with $\epsilon = 0.5$ the action value evolution curves
+follow the same pattern. This results resemble the underfitting and
+overfitting errors that occur in supervised machine learning
+problems. In this case we can conclude that a rate of $\epsilon =
+0.05$ or $\epsilon = 0.1$ perform better in the mountain car problem.
+
+\begin{thebibliography}{8}
+
+\bibitem{rlbook}
+Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An introduction.
+
+\bibitem{wine_data}
+Archive.ics.uci.edu. (2019). UCI Machine Learning Repository: Wine Quality Data Set. [online] Available at: \url{https://archive.ics.uci.edu/ml/datasets/Wine+Quality} [Accessed 5 Mar. 2019].
+
+\bibitem{fibo}
+Weibel, D. (2019). Recursion and Dynamic Programming. [online] Weibeld.net. Available at: \url{http://weibeld.net/algorithms/recursion.html} [Accessed 16 Feb. 2019].
+
+\bibitem{fib_num}
+En.wikipedia.org. (2019). Fibonacci number. [online] Available at: \url{https://en.wikipedia.org/wiki/Fibonacci\_number} [Accessed 16 Feb. 2019].
+
+\bibitem{dijkstra}
+Sniedovich, M., 2006. Dijkstra's algorithm revisited: the dynamic programming connexion. Control and cybernetics, 35(3), pp.599-620.
+
+\end{thebibliography}
+
+
+\section{Appendix A: source code}\label{appendix}
+This appendix section contains the source code of the implemented programs.
+
+\subsection{fibonacci.py}\label{fibonacci_code}
+%% \lstinputlisting[language=Python]{../fibonacci.py}
+
+\subsection{graph.py}\label{graph_code}
+%% \lstinputlisting[language=Python]{../graph.py}
+
+\end{document}
