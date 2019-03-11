@@ -73,8 +73,8 @@ hence, to be calculated as shown in equation \ref{rbf_gaussian}
 \phi(||x-c_j||) = \exp\left(-\frac{||s-c_j||^2}{2\sigma^2_j}\right)
 \end{equation}
 As we can observe from equation \ref{rbf_linear_comb}, $J$ defines the
-number of centers and hence the number of radial basis functions used
-in the linear combination, and $w_j$ the weights for each function.
+number of centers and, hence, the number of radial basis functions used
+in the linear combination and $w_j$ the weights for each function.
 
 \section{Linear regression with RBF}
 In this section we solve a linear regression problem by exploiting the
@@ -87,7 +87,7 @@ standard manner as follows:
 \item Learn the weight vector by stochastic gradient descent on the train set
 \item Compute the root mean squared error of the model tested
   on the test set
-\item Compare the model with one deriving the weight vector by xusing the
+\item Compare the model with one deriving the weight vector by using the
   pseudoinverse.
 \end{itemize}
 We performed the steps for different number of radial basis function
@@ -171,11 +171,11 @@ following:
 We performed the steps for different numbers of radial basis
 functions. In this case we could compute the weight vector using the
 pseudoinverse since we used as unbiased estimate of the target value
-function ($U_t$) the values obtain by tabular discretization and
+function ($U_t$) the values obtain by tabular discretization
 stored in \textit{q\_table}. When deriving the value function
 approximation on-line the unbiased estimator can be, for
 example, the return $G_t$ in Monte Carlo methods or the target
-$R_{t+1} +\gamma\hat{v}(S_{t+1}, w)$ in temporal difference
+$R_{t+1} +\gamma \hat{v}(S_{t+1}, w)$ in temporal difference
 methods. We can observe the centers of the radial basis functions for
 $J = 10$, the value function derived via tabular discretization and
 the value functions approximation derived with different $J$
@@ -210,7 +210,7 @@ respectively in figures \ref{fig4}, \ref{fig5} and \ref{fig6}.
  \caption{Value functions approximation for different $J$}\label{fig6}
 \end{figure}
 As we can see from figure \ref{fig6}, the data indicate that
-increasing the number of radial basis function results into a more
+increasing the number of radial basis functions results into a more
 precise approximation. The figure with $J = 40$ is the one that is
 closer to the figure plotting the value function derived by the table
 discretization method, see figure \ref{fig5}. Increasing $J$,
