@@ -93,7 +93,47 @@ standard manner as follows:
 We performed the steps for different number of radial basis function
 ($J$) to analyze which one is the model that generalizes better the
 pattern of the input data. The input dataset we used for the task is
-the UCI \textit{red wine quality} dataset \cite{wine_data}.
+the UCI \textit{red wine quality} dataset \cite{wine_data}. We tested
+the program for $J = \{1, 2, 3, 4, 5, 6, 10\}$. We can observe the
+loss function convergence of SGD, the divergence of the best obtained
+model from the target data and the train and test set RMSE
+respectively in figures \ref{fig1}, \ref{fig2}, \ref{fig3}.
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/loss/Figure_1.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/loss/Figure_4.png}
+  \end{minipage}
+ \caption{Loss convergence for different $J$}\label{fig1}
+\end{figure}
+\begin{figure}
+    \centering
+\includegraphics[width=0.66\textwidth]{img/train_and_test/Figure_1.png}
+\caption{Root mean squared error for train and test set}\label{fig2}
+\end{figure}
+\begin{figure}
+    \centering
+\includegraphics[width=0.66\textwidth]{img/target_vs_pred/Figure_4.png}
+\caption{Best model divergence from target data}\label{fig3}
+\end{figure}
+
+We can see, for different $J$ values, that the error is
+minimized and that the models converge (Figure \ref{fig1}). Having
+more radial basis functions, hence a higher $J$, makes the model
+predictions more accurate and closer to the target. Increasing the
+$J$, however, is not always resulting in better and more accurate
+models that capture the general pattern of the input data. This
+problem is well known as the overfitting problem and results in a
+model being influenced not only by the pattern but also by the noise
+of the data. An overfitted model performs well on the training data
+and poorly on the testing data. Figure \ref{fig2} describes this
+scenario. We also deduce that the RBF model with $J = 4$
+produces the best results. This is confirmed by figure \ref{fig3}, we
+can in fact see that the predictions of this model fall close to the
+target ones.
 
 \section{Fibonacci numbers}
 Fibonacci numbers are a mathematical sequence which values are
@@ -116,10 +156,10 @@ phase the generated solution of the subproblems are combined to solve
 a bigger subproblem. The solution is calculated when all the
 subproblems are solved and combined together. We can observe a
 recursion tree of the fifth fibonacci sequence number in figure \ref{fig1}.
-\begin{figure}
-\includegraphics[width=\textwidth]{recursion.png}
-\caption{Recursion tree of fibonacci sequence calculation} \label{fig1}
-\end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{recursion.png}
+%% \caption{Recursion tree of fibonacci sequence calculation} \label{fig1}
+%% \end{figure}
 The recursion generates and traverses the tree as a depth first search
 algorithm. We can observe from figure \ref{fig1} that the very same
 subproblems are generated and solved multiple times. We can observe
@@ -157,26 +197,26 @@ we can observe from the histograms, increasing the connection
 probability decreases the average shortest path cost between each node.
 The code of the program can be seen in subsection \ref{graph_code} of
 appendix \ref{appendix}.
-\begin{figure}
-\includegraphics[width=\textwidth]{img/hist1.png}
-\caption{Histogram of shortest pairwise distances for probability 0.02
-and 0.05} \label{hist1}
-\end{figure}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/hist2.png}
-\caption{Histogram of shortest pairwise distances for probability 0.08
-and 0.1} \label{hist2}
-\end{figure}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/hist3.png}
-\caption{Histogram of shortest pairwise distances for probability 0.2
-and 0.3} \label{hist3}
-\end{figure}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/hist4.png}
-\caption{Histogram of shortest pairwise distances for probability 0.5
-and 0.7} \label{hist4}
-\end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/hist1.png}
+%% \caption{Histogram of shortest pairwise distances for probability 0.02
+%% and 0.05} \label{hist1}
+%% \end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/hist2.png}
+%% \caption{Histogram of shortest pairwise distances for probability 0.08
+%% and 0.1} \label{hist2}
+%% \end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/hist3.png}
+%% \caption{Histogram of shortest pairwise distances for probability 0.2
+%% and 0.3} \label{hist3}
+%% \end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/hist4.png}
+%% \caption{Histogram of shortest pairwise distances for probability 0.5
+%% and 0.7} \label{hist4}
+%% \end{figure}
 
 \section{Mountain car}
 The mountain car problem is a classic reinforcement learning
@@ -213,14 +253,14 @@ exploration rate and analyze the action value evolution of a specific state
 (\textit{position and velocity}) through episodes. Figures \ref{exp1} and
 \ref{exp2} show how different exploration probabilities affect the
 action values. 
-\begin{figure}
-\includegraphics[width=\textwidth]{img/exp1.png}
-\caption{Action value evolution for exploration probability 0 and 0.05} \label{exp1}
-\end{figure}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/exp2.png}
-\caption{Action value evolution for exploration probability 0.1 and 0.5} \label{exp2}
-\end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/exp1.png}
+%% \caption{Action value evolution for exploration probability 0 and 0.05} \label{exp1}
+%% \end{figure}
+%% \begin{figure}
+%% \includegraphics[width=\textwidth]{img/exp2.png}
+%% \caption{Action value evolution for exploration probability 0.1 and 0.5} \label{exp2}
+%% \end{figure}
 From our experiments we can deduct that an exploration probability of
 $0$ results in a greedy action selection with an high bias. On the
 other hand, a really high probability, results in evaluating all the
