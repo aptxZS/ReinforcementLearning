@@ -53,11 +53,16 @@ class Hider:
         self.epsilon = 0.1
         self.rewards = np.zeros(len(self.actions))
         self.action_index = 0
+        self.fpl_lr = 35
 
     def select_action(self):
         if random.random() > self.epsilon:
             return np.argmax(self.rewards)
         return np.random.choice(self.actions.shape[0])
+
+    # normalize and reverse the reward obtain by seeker
+    def compute_hider_reward(self, reward):
+        return abs(reward - self.flags.flags_no) / float(self.flags.flags_no)
 
     def hide_flags_epsilon_greedy(self):
         self.action_index = self.select_action()
@@ -66,11 +71,22 @@ class Hider:
         self.flags.put_flags(positions)
 
     def update_reward_epsilon_greedy(self, reward):
-        # normalize and reverse the reward obtain by seeker
-        reward = abs(reward - self.flags.flags_no) / float(self.flags.flags_no)
+        reward = self.compute_hider_reward(reward)
         n = float(self.frequencies[self.action_index])
         prev_reward = self.rewards[self.action_index]
         self.rewards[self.action_index] = ((n - 1) / n) * prev_reward + (1 / n) * reward
+
+    def hide_flags_fpl(self):
+        exp_dist = np.random.exponential(self.fpl_lr, len(self.actions))
+        # Add exponentially drawn noise
+        new_rewards = self.rewards + exp_dist
+        self.action_index = np.argmax(new_rewards)
+        self.frequencies[self.action_index] += 1
+        self.flags.put_flags(self.actions[self.action_index])
+
+    def update_reward_fpl(self, reward):
+        reward = self.compute_hider_reward(reward)
+        self.rewards[self.action_index] += reward
 
     def hideFlagsRandomly(self):
         random_index = np.random.choice(self.actions.shape[0])
@@ -128,10 +144,12 @@ hider = Hider(flags)
 seeker = Seeker(flags)
 for i in range(rounds_no):
     # hider.hideFlagsRandomly()
-    hider.hide_flags_epsilon_greedy()
+    # hider.hide_flags_epsilon_greedy()
+    hider.hide_flags_fpl()
     # print(flags)
     reward = seeker.seekFlags()
-    hider.update_reward_epsilon_greedy(reward)
+    hider.update_reward_fpl(reward)
+    # hider.update_reward_epsilon_greedy(reward)
     # print()
 print(seeker.rewards)
 print(hider.frequencies)
