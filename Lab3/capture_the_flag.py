@@ -50,6 +50,27 @@ class Hider:
         self.flags = flags
         self.actions = compute_actions(flags)
         self.frequencies = np.zeros(len(self.actions))
+        self.epsilon = 0.1
+        self.rewards = np.zeros(len(self.actions))
+        self.action_index = 0
+
+    def select_action(self):
+        if random.random() > self.epsilon:
+            return np.argmax(self.rewards)
+        return np.random.choice(self.actions.shape[0])
+
+    def hide_flags_epsilon_greedy(self):
+        self.action_index = self.select_action()
+        positions = self.actions[self.action_index]
+        self.frequencies[self.action_index] += 1
+        self.flags.put_flags(positions)
+
+    def update_reward_epsilon_greedy(self, reward):
+        # normalize and reverse the reward obtain by seeker
+        reward = abs(reward - self.flags.flags_no) / float(self.flags.flags_no)
+        n = float(self.frequencies[self.action_index])
+        prev_reward = self.rewards[self.action_index]
+        self.rewards[self.action_index] = ((n - 1) / n) * prev_reward + (1 / n) * reward
 
     def hideFlagsRandomly(self):
         random_index = np.random.choice(self.actions.shape[0])
@@ -64,7 +85,7 @@ class Seeker:
     def __init__(self, flags):
         self.flags = flags
         self.rewards = 0
-        self.gamma = 0.5
+        self.gamma = 0.2
         self.actions = compute_actions(flags)
         self.weights = np.ones(len(self.actions))
 
@@ -79,7 +100,7 @@ class Seeker:
     # exp3 place selection
     def select_place(self):
         probabilities = (1 - self.gamma) * (self.weights / sum(self.weights)) + (self.gamma * 1.0 / self.flags.places_no)
-        print(probabilities)
+        # print(probabilities)
         return self.categorical_distribution(probabilities)
 
     # exp3 weight update
@@ -91,11 +112,12 @@ class Seeker:
         # positions = random.sample(range(self.flags.places_no), self.flags.flags_no)
         # self.rewards += self.flags.check_flags(positions)
         action_index, prob = self.select_place()
-        print("try positions: {}".format(self.actions[action_index]))
+        # print("try positions: {}".format(self.actions[action_index]))
         reward = self.flags.check_flags(self.actions[action_index])
         self.rewards += reward
         self.update_weight(action_index, prob, reward)
-        print(action_index, prob)
+        # print(action_index, prob)
+        return reward
 
 
 rounds_no = 1000
@@ -105,9 +127,11 @@ flags = Flags(flags_places, flags_no)
 hider = Hider(flags)
 seeker = Seeker(flags)
 for i in range(rounds_no):
-    hider.hideFlagsRandomly()
-    print(flags)
-    seeker.seekFlags()
-    print()
+    # hider.hideFlagsRandomly()
+    hider.hide_flags_epsilon_greedy()
+    # print(flags)
+    reward = seeker.seekFlags()
+    hider.update_reward_epsilon_greedy(reward)
+    # print()
 print(seeker.rewards)
 print(hider.frequencies)
