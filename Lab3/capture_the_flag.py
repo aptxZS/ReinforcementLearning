@@ -130,7 +130,7 @@ class Seeker:
         action_index, prob = self.select_place()
         # print("try positions: {}".format(self.actions[action_index]))
         reward = self.flags.check_flags(self.actions[action_index])
-        self.rewards += reward
+        self.rewards += reward / self.flags.flags_no
         self.update_weight(action_index, prob, reward)
         # print(action_index, prob)
         return reward
