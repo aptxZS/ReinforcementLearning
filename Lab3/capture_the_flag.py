@@ -45,8 +45,13 @@ def compute_actions(flags):
 
 
 class Hider:
-
-    def __init__(self, flags):
+    
+    
+    def __init__(self, flags, hider_type):
+        self.valid_types = ['random', 'e-greedy', 'fpl']
+        if hider_type not in self.valid_types:
+            raise ValueError("results: status must be one of {}".format(self.valid_types))
+        self.hider_type = hider_type
         self.flags = flags
         self.actions = compute_actions(flags)
         self.frequencies = np.zeros(len(self.actions))
@@ -95,6 +100,20 @@ class Hider:
         self.frequencies[random_index] += 1
         self.flags.put_flags(positions)
 
+    def hide_flags(self):
+        if self.hider_type == self.valid_types[0]:
+            return self.hideFlagsRandomly()
+        if self.hider_type == self.valid_types[1]:
+            return self.hide_flags_epsilon_greedy()
+        return self.hide_flags_fpl()
+
+    def update_reward(self, reward):
+        if self.hider_type == self.valid_types[1]:
+            return self.update_reward_epsilon_greedy(reward)
+        if self.hider_type == self.valid_types[2]:
+            return self.update_reward_fpl(reward)
+        return
+
 
 class Seeker:
 
@@ -130,26 +149,31 @@ class Seeker:
         action_index, prob = self.select_place()
         # print("try positions: {}".format(self.actions[action_index]))
         reward = self.flags.check_flags(self.actions[action_index])
-        self.rewards += reward / self.flags.flags_no
+        self.rewards += reward # / self.flags.flags_no
         self.update_weight(action_index, prob, reward)
         # print(action_index, prob)
         return reward
 
 
-rounds_no = 1000
+
+strategies = {'e-greedy', 'fpl', 'random'}      
+rounds_no = 500
 flags_places = 5
 flags_no = 2
 flags = Flags(flags_places, flags_no)
-hider = Hider(flags)
-seeker = Seeker(flags)
-for i in range(rounds_no):
-    # hider.hideFlagsRandomly()
-    # hider.hide_flags_epsilon_greedy()
-    hider.hide_flags_fpl()
-    # print(flags)
-    reward = seeker.seekFlags()
-    hider.update_reward_fpl(reward)
-    # hider.update_reward_epsilon_greedy(reward)
-    # print()
-print(seeker.rewards)
-print(hider.frequencies)
+results = dict()
+for s in strategies:
+    hider = Hider(flags, s)
+    seeker = Seeker(flags)
+    cumulative_rewards = []
+    pred = 0
+    for i in range(rounds_no):
+        hider.hide_flags()
+        reward = seeker.seekFlags()
+        cumulative_rewards.append(reward + pred)
+        pred += reward
+        hider.update_reward(reward)
+    print("Results for hider strategy: {}".format(s))
+    print(seeker.rewards)
+    print(hider.frequencies)
+    results[s] = cumulative_rewards
