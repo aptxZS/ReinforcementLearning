@@ -30,34 +30,42 @@ class Flags:
         return "{}".format(self.flags_array)
 
 
+# Given a flag object computes all the possible actions
+def compute_actions(flags):
+    x = np.arange(flags.places_no)
+    # instead of 2 should be number of flags
+    mesh = np.array(np.meshgrid(x, x)).T.reshape(-1, 2)
+    mesh.sort(axis=1)
+    mesh = np.unique(mesh, axis=0)
+    duplicates = []
+    for i in range(len(mesh)):
+        if mesh[i][0] == mesh[i][1]:
+            duplicates.append(i)
+    return np.delete(mesh, duplicates, 0)
+
+
 class Hider:
 
     def __init__(self, flags):
         self.flags = flags
-        self.frequencies = np.zeros(flags.places_no)
+        self.actions = compute_actions(flags)
+        self.frequencies = np.zeros(len(self.actions))
 
-    def hideFlags(self):
-        positions = random.sample(range(self.flags.places_no), self.flags.flags_no)
-        for pos in positions:
-            self.frequencies[pos] += 1
+    def hideFlagsRandomly(self):
+        random_index = np.random.choice(self.actions.shape[0])
+        positions = self.actions[random_index]
+        # positions = [0, 1]
+        self.frequencies[random_index] += 1
         self.flags.put_flags(positions)
 
 
 class Seeker:
 
-    def compute_actions(self):
-        x = np.arange(self.flags.places_no)
-        # instead of 2 should be number of flags
-        mesh = np.array(np.meshgrid(x, x)).T.reshape(-1, 2)
-        mesh.sort(axis=1)
-        mesh = np.unique(mesh, axis=0)
-        return mesh
-
     def __init__(self, flags):
         self.flags = flags
         self.rewards = 0
-        self.gamma = 0.05
-        self.actions = self.compute_actions()
+        self.gamma = 0.5
+        self.actions = compute_actions(flags)
         self.weights = np.ones(len(self.actions))
 
     def categorical_distribution(self, probabilities):
@@ -81,6 +89,7 @@ class Seeker:
 
     def seekFlags(self):
         # positions = random.sample(range(self.flags.places_no), self.flags.flags_no)
+        # self.rewards += self.flags.check_flags(positions)
         action_index, prob = self.select_place()
         print("try positions: {}".format(self.actions[action_index]))
         reward = self.flags.check_flags(self.actions[action_index])
@@ -89,16 +98,16 @@ class Seeker:
         print(action_index, prob)
 
 
+rounds_no = 1000
 flags_places = 5
 flags_no = 2
 flags = Flags(flags_places, flags_no)
 hider = Hider(flags)
 seeker = Seeker(flags)
-for i in range(1000):
-    hider.hideFlags()
+for i in range(rounds_no):
+    hider.hideFlagsRandomly()
     print(flags)
     seeker.seekFlags()
-    print(seeker.rewards)
     print()
 print(seeker.rewards)
 print(hider.frequencies)
