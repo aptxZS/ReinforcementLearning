@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import math
+import matplotlib.pyplot as plt
 
 
 class Flags:
@@ -46,7 +47,11 @@ def compute_actions(flags):
 
 class Hider:
 
-    def __init__(self, flags):
+    def __init__(self, flags, hider_type):
+        self.valid_types = ['random', 'e-greedy', 'fpl']
+        if hider_type not in self.valid_types:
+            raise ValueError("results: status must be one of {}".format(self.valid_types))
+        self.hider_type = hider_type
         self.flags = flags
         self.actions = compute_actions(flags)
         self.frequencies = np.zeros(len(self.actions))
@@ -95,6 +100,20 @@ class Hider:
         self.frequencies[random_index] += 1
         self.flags.put_flags(positions)
 
+    def hide_flags(self):
+        if self.hider_type == self.valid_types[0]:
+            return self.hideFlagsRandomly()
+        if self.hider_type == self.valid_types[1]:
+            return self.hide_flags_epsilon_greedy()
+        return self.hide_flags_fpl()
+
+    def update_reward(self, reward):
+        if self.hider_type == self.valid_types[1]:
+            return self.update_reward_epsilon_greedy(reward)
+        if self.hider_type == self.valid_types[2]:
+            return self.update_reward_fpl(reward)
+        return
+
 
 class Seeker:
 
@@ -116,7 +135,6 @@ class Seeker:
     # exp3 place selection
     def select_place(self):
         probabilities = (1 - self.gamma) * (self.weights / sum(self.weights)) + (self.gamma * 1.0 / self.flags.places_no)
-        # print(probabilities)
         return self.categorical_distribution(probabilities)
 
     # exp3 weight update
@@ -128,28 +146,51 @@ class Seeker:
         # positions = random.sample(range(self.flags.places_no), self.flags.flags_no)
         # self.rewards += self.flags.check_flags(positions)
         action_index, prob = self.select_place()
-        # print("try positions: {}".format(self.actions[action_index]))
         reward = self.flags.check_flags(self.actions[action_index])
-        self.rewards += reward
+        self.rewards += reward # / self.flags.flags_no
         self.update_weight(action_index, prob, reward)
-        # print(action_index, prob)
         return reward
 
 
-rounds_no = 1000
+strategies = {'e-greedy', 'fpl', 'random'}
+rounds_no = 500
 flags_places = 5
 flags_no = 2
 flags = Flags(flags_places, flags_no)
-hider = Hider(flags)
-seeker = Seeker(flags)
-for i in range(rounds_no):
-    # hider.hideFlagsRandomly()
-    # hider.hide_flags_epsilon_greedy()
-    hider.hide_flags_fpl()
-    # print(flags)
-    reward = seeker.seekFlags()
-    hider.update_reward_fpl(reward)
-    # hider.update_reward_epsilon_greedy(reward)
-    # print()
-print(seeker.rewards)
-print(hider.frequencies)
+results = dict()
+for s in strategies:
+    cumulative_rewards = np.zeros(rounds_no)
+    reward_history = np.zeros(rounds_no)
+    for i in range(100):
+        hider = Hider(flags, s)
+        seeker = Seeker(flags)
+        pred = 0
+        for i in range(rounds_no):
+            hider.hide_flags()
+            reward = seeker.seekFlags()
+            reward_history[i] += reward
+            cumulative_rewards[i] += reward + pred
+            pred += reward
+            hider.update_reward(reward)
+    cumulative_rewards /= 100
+    reward_history /= 100
+    print("Results for hider strategy: {}".format(s))
+    print(seeker.rewards)
+    print(hider.frequencies)
+    results[s] = (cumulative_rewards, reward_history)
+
+# Displaying graphs of seeker's regret ==> cumulative reward / rounds_no
+for s in strategies:
+    reward = results[s][0]
+    x_axis = np.linspace(1, rounds_no, rounds_no)
+    #   total_regret = np.cumsum(flags_no - reward)
+    plt.plot(x_axis, reward / x_axis, label=s)
+    plt.legend()
+plt.show()
+
+for s in strategies:
+    regret = 2 - results[s][1]
+    plt.plot(x_axis, np.cumsum(regret)/x_axis, label=s)
+    plt.legend()
+plt.show()
+#   plt.plot(x_axis, (reward) / x_axis )
