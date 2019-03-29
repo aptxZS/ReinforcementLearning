@@ -46,12 +46,7 @@ def compute_actions(flags):
 
 
 class Hider:
-<<<<<<< HEAD
 
-=======
-    
-    
->>>>>>> fbc49a02001f6c5f25458b24cc98f2f4b1887705
     def __init__(self, flags, hider_type):
         self.valid_types = ['random', 'e-greedy', 'fpl']
         if hider_type not in self.valid_types:
@@ -157,19 +152,13 @@ class Seeker:
         return reward
 
 
-<<<<<<< HEAD
 strategies = {'e-greedy', 'fpl', 'random'}
-=======
-
-strategies = {'e-greedy', 'fpl', 'random'}      
->>>>>>> fbc49a02001f6c5f25458b24cc98f2f4b1887705
 rounds_no = 500
 flags_places = 5
 flags_no = 2
 flags = Flags(flags_places, flags_no)
 results = dict()
 for s in strategies:
-<<<<<<< HEAD
     cumulative_rewards = np.zeros(rounds_no)
     reward_history = np.zeros(rounds_no)
     for i in range(100):
@@ -204,20 +193,3 @@ for s in strategies:
     plt.plot(x_axis, np.cumsum(regret)/x_axis, label=s)
     plt.legend()
 plt.show()
-#   plt.plot(x_axis, (reward) / x_axis )
-=======
-    hider = Hider(flags, s)
-    seeker = Seeker(flags)
-    cumulative_rewards = []
-    pred = 0
-    for i in range(rounds_no):
-        hider.hide_flags()
-        reward = seeker.seekFlags()
-        cumulative_rewards.append(reward + pred)
-        pred += reward
-        hider.update_reward(reward)
-    print("Results for hider strategy: {}".format(s))
-    print(seeker.rewards)
-    print(hider.frequencies)
-    results[s] = cumulative_rewards
->>>>>>> fbc49a02001f6c5f25458b24cc98f2f4b1887705
