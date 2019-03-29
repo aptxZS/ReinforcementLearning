@@ -48,7 +48,7 @@ def compute_actions(flags):
 class Hider:
 
     def __init__(self, flags, hider_type):
-        self.valid_types = ['random', 'e-greedy', 'fpl']
+        self.valid_types = ['random', 'e-greedy', 'fpl', 'fixed']
         if hider_type not in self.valid_types:
             raise ValueError("results: status must be one of {}".format(self.valid_types))
         self.hider_type = hider_type
@@ -100,12 +100,17 @@ class Hider:
         self.frequencies[random_index] += 1
         self.flags.put_flags(positions)
 
+    def hide_flags_fixed(self):
+        self.flags.put_flags(self.actions[0])
+
     def hide_flags(self):
         if self.hider_type == self.valid_types[0]:
             return self.hideFlagsRandomly()
         if self.hider_type == self.valid_types[1]:
             return self.hide_flags_epsilon_greedy()
-        return self.hide_flags_fpl()
+        if self.hider_type == self.valid_types[2]:
+            return self.hide_flags_fpl()
+        return self.hide_flags_fixed()
 
     def update_reward(self, reward):
         if self.hider_type == self.valid_types[1]:
@@ -147,12 +152,12 @@ class Seeker:
         # self.rewards += self.flags.check_flags(positions)
         action_index, prob = self.select_place()
         reward = self.flags.check_flags(self.actions[action_index])
-        self.rewards += reward # / self.flags.flags_no
+        self.rewards += reward  # / self.flags.flags_no
         self.update_weight(action_index, prob, reward)
         return reward
 
 
-strategies = {'e-greedy', 'fpl', 'random'}
+strategies = {'e-greedy', 'fpl', 'random'}  # add 'fixed' to play against fixed strat opponent
 rounds_no = 500
 flags_places = 5
 flags_no = 2
