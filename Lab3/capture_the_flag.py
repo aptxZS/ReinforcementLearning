@@ -157,7 +157,7 @@ class Seeker:
         return reward
 
 
-strategies = {'e-greedy', 'fpl', 'random'}  # add 'fixed' to play against fixed strat opponent
+strategies = ['e-greedy', 'fpl', 'random']  # add 'fixed' to play against fixed strat opponent
 rounds_no = 500
 flags_places = 5
 flags_no = 2
@@ -209,11 +209,11 @@ K = len(hider.actions)
 T = rounds_no
 upper_bound = np.sqrt(x_axis * K * T * np.log(K)) / 2
 lower_bound = np.sqrt(T * x_axis) / 2
-plt.plot(upper_bound, label=r'$O(\sqrt{KT\log{K}})$')
-plt.plot(lower_bound, label=r'$\Theta(\sqrt{T})$')
 for s in strategies:
     total_regret = np.cumsum(flags.flags_no - results[s][1])
     plt.plot(x_axis, total_regret, label=s)
+plt.plot(upper_bound, label=r'$O(\sqrt{KT\log{K}})$')
+plt.plot(lower_bound, label=r'$\Theta(\sqrt{T})$')
 plt.xlabel('T')
 plt.ylabel('Regret')
 plt.legend()
