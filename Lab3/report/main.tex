@@ -1,0 +1,268 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+\usepackage{listings}
+\usepackage{color}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+%  frame=single,
+  breaklines=true,
+}
+
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Reinforcement learning - Lab 3}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Dimitri Diomaiuta - 30598109}
+%
+% \authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{University of Southampton}
+%% \institute{Princeton University, Princeton NJ 08544, USA \and
+%% Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+%% \email{lncs@springer.com}\\
+%% \url{http://www.springer.com/gp/computer-science/lncs} \and
+%% ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+%% \email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+%% \begin{abstract}
+%% Searching is one of the oldest artificial intelligence techniques used for problem solving. In this paper we analyze the results and scalability of both uninformed and informed search algorithms.
+%% %\keywords{First keyword  \and Second keyword \and Another keyword.}
+%% \end{abstract}
+%
+%
+%
+
+\section{Answer 1}
+In a 2-player capture the flag game with 2 flags, 5 sites and 100
+rounds we have a frequency distribution, which describes how many
+times a site has been selected. The hider claims that the distribution
+shown by equation \ref{hdist} is correct.
+\begin{equation}\label{hdist}
+H_{dist} = (47, 53, 31, 36, 34)
+\end{equation}
+The seeker claims, correctly, that this distribution is
+incorrect. Since the hider selects 2 sites at each timestep $t$ the
+sum of the frequency distribution should be consistent with equation
+\ref{cons}, where $T$ is the number of rounds.
+\begin{equation}\label{cons}
+  \sum_{x_i \in dist}^{sites}x_i = flags * T
+\end{equation}
+Equation \ref{cons} does not hold for the hider distribution, in fact,
+we have a total sum of $201$ ($\sum_{x_i \in H_{dist}}^{sites}x_i$)
+which is bigger than $200$ ($flags * T$). The frequency distribution
+described by equation \ref{newdist} respects the constraint described
+by equation \ref{cons} and, hence, can be a correct frequency
+distribution for the outlined game setting.
+\begin{equation}\label{newdist}
+  H_{newdist} = (102, 26, 24, 40, 8)
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+\section{Radial basis function}\label{RBF}
+In this paper we analyze how to use radial basis function (RBF) to
+solve a linear regression and a reinforcement learning problem. A RBF
+is a real-valued function $\phi$ whose value depends on the distance
+from a point called origin such that $\phi(x) = \phi(||x||)$. RBF
+models are particularly useful to generate basis functions from
+feature vectors in order to solve function approximation problems via
+linear combination. The output of the linear combination is described
+by equation \ref{rbf_linear_comb}.
+\begin{equation}\label{rbf_linear_comb}
+  f(x) = \sum_{j=1}^{J}w_j\phi(||x-c_j||)
+\end{equation}
+The radial basis function is usually assumed to be Gaussian and,
+hence, to be calculated as shown in equation \ref{rbf_gaussian}
+\cite{rlbook}.
+\begin{equation}\label{rbf_gaussian}
+\phi(||x-c_j||) = \exp\left(-\frac{||x-c_j||^2}{2\sigma^2_j}\right)
+\end{equation}
+As we can observe from equation \ref{rbf_linear_comb}, $J$ defines the
+number of centers and, hence, the number of radial basis functions used
+in the linear combination and $w_j$ the weights for each function.
+
+\section{Linear regression with RBF}
+In this section we solve a linear regression problem by exploiting the
+RBF model described in section \ref{RBF}. We solve the problem in a
+standard manner as follows:
+\begin{itemize}
+\item Load a raw dataset
+\item Divide into train and test set
+\item Given a $J$ compute the design matrix of features using a RBF model
+\item Learn the weight vector by stochastic gradient descent on the train set
+\item Compute the root mean squared error of the model tested
+  on the test set
+\item Compare the model with one deriving the weight vector by using the
+  pseudoinverse.
+\end{itemize}
+We performed the steps for different number of radial basis function
+($J$) to analyze which one is the model that generalizes better the
+pattern of the input data. The input dataset we used for the task is
+the UCI \textit{red wine quality} dataset \cite{wine_data}. We tested
+the program for $J = \{1, 2, 3, 4, 5, 6, 10\}$. We can observe the
+loss function convergence of SGD, the divergence of the best obtained
+model from the target data and the train and test set RMSE
+respectively in figures \ref{fig1}, \ref{fig2}, \ref{fig3}.
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/loss/Figure_1.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/loss/Figure_4.png}
+  \end{minipage}
+ \caption{Loss convergence for different $J$}\label{fig1}
+\end{figure}
+\begin{figure}
+    \centering
+\includegraphics[width=0.66\textwidth]{img/train_and_test/Figure_1.png}
+\caption{Root mean squared error for train and test set}\label{fig2}
+\end{figure}
+\begin{figure}
+    \centering
+\includegraphics[width=0.66\textwidth]{img/target_vs_pred/Figure_4.png}
+\caption{Best model divergence from target data}\label{fig3}
+\end{figure}
+
+We can see, for different $J$ values, that the error is
+minimized and that the models converge (Figure \ref{fig1}). Having
+more radial basis functions, hence a higher $J$, makes the model
+predictions more accurate and closer to the target. Increasing the
+$J$, however, is not always resulting in better and more accurate
+models that capture the general pattern of the input data. This
+problem is well known as the overfitting problem and results in a
+model being influenced not only by the pattern but also by the noise
+of the data. An overfitted model performs well on the training data
+and poorly on the testing data. Figure \ref{fig2} describes this
+scenario. We also deduce that the RBF model with $J = 4$
+produces the best results. This is confirmed by figure \ref{fig3}, we
+can in fact see that the predictions of this model fall close to the
+target ones.
+
+\section{Reinforcement learning with RBF}
+In a reinforcement learning setting RBF models can be exploited to
+derive a value function approximation. Tabular methods are impractical
+when dealing with problems that have big state spaces (e.g go has
+$10^{170}$ possible states) or that have continous valued features
+(tabular methods need preprocessing such tile coding). The first step
+is to derive a feature vector representation of a state via RBF ($x(s)$). The
+second one is to introduce a weight vector. The value function
+approximation is derived by a linear combination of the weight and
+feature vector, as shown in equation \ref{value_approx} \cite{rlbook}.
+\begin{equation}\label{value_approx}
+\hat{v}(s, w) = w^Tx(s) = \sum_{i=1}^{d}w_ix_i(s)  
+\end{equation}
+The problem now resembles a supervised learning setting and, thus, we
+can solve it by updating the weight vector exploiting gradient
+descent. The weight update using SGD is calculated in a similar
+manner to linear regression, as equation \ref{w_update} shows
+\cite{rlbook}.
+\begin{equation}\label{w_update}
+w_{t+1} = w_t + \alpha\left[U_t - \hat{v}(S_t, w_t)\right]x(S_t)
+\end{equation}
+
+Using this knowledge we solved the mountain car problem by
+deriving a value function approximation. The steps we took are the
+following:
+\begin{itemize}
+  \item Obtain the value function used by tabular discretization in
+    \textit{Lab one}.
+  \item Construct feature vector state representation using RBF
+    \item Use tabular discretization value function as an unbiased
+      estimate ($U_t$)
+    \item Compute the weight vector using the pseudoinverse.
+\end{itemize}
+We performed the steps for different numbers of radial basis
+functions. In this case we could compute the weight vector using the
+pseudoinverse since we used as unbiased estimate of the target value
+function ($U_t$) the values obtain by tabular discretization
+stored in \textit{q\_table}. When deriving the value function
+approximation on-line the unbiased estimator can be, for
+example, the return $G_t$ in Monte Carlo methods or the target
+$R_{t+1} +\gamma \hat{v}(S_{t+1}, w)$ in temporal difference
+methods. We can observe the centers of the radial basis functions for
+$J = 10$, the value function derived via tabular discretization and
+the value functions approximation derived with different $J$
+respectively in figures \ref{fig4}, \ref{fig5} and \ref{fig6}.
+\begin{figure}[!htb]
+    \centering
+\includegraphics[width=0.60\textwidth]{img/mountain_car/RBF_centers.png}
+\caption{RBF centers used to create feature vector state}\label{fig4}
+\end{figure}
+\begin{figure}[!htb]
+    \centering
+\includegraphics[width=0.60\textwidth]{img/mountain_car/VFq_table.png}
+\caption{q\_table derived value function}\label{fig5}
+\end{figure}
+\begin{figure}[!htb]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/mountain_car/VF2.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/mountain_car/VF10.png}
+  \end{minipage}
+    \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/mountain_car/VF20.png}
+  \end{minipage}
+    \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{img/mountain_car/VF40.png}
+  \end{minipage}
+ \caption{Value functions approximation for different $J$}\label{fig6}
+\end{figure}
+As we can see from figure \ref{fig6}, the data indicate that
+increasing the number of radial basis functions results into a more
+precise approximation. The figure with $J = 40$ is the one that is
+closer to the figure plotting the value function derived by the table
+discretization method, see figure \ref{fig5}. Increasing $J$,
+though, results in drastically incrementing the computational steps of the
+algorithm making this infeasible for very high $J$ values. In this
+case a $J$ value of $10$ is enough to drive the car on top of the
+mountain. 
+
+
+\begin{thebibliography}{8}
+
+\bibitem{rlbook}
+Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An introduction.
+
+\bibitem{wine_data}
+Archive.ics.uci.edu. (2019). UCI Machine Learning Repository: Wine Quality Data Set. [online] Available at: \url{https://archive.ics.uci.edu/ml/datasets/Wine+Quality} [Accessed 5 Mar. 2019].
+
+\end{thebibliography}
+
+\end{document}
