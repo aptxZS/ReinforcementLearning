@@ -207,10 +207,10 @@ plt.show()
 # Plotting total regret against different strategies
 K = len(hider.actions)
 T = rounds_no
-upper_limit_regret = np.sqrt(x_axis * K * T * np.log(K)) / 2
-lower_limit_regret = np.sqrt(K * 20 * x_axis) / 2
-plt.plot(upper_limit_regret, label=r'$O(\sqrt{KT\log{K}})$')
-plt.plot(lower_limit_regret, label=r'$\Theta(\sqrt{KT})$')
+upper_bound = np.sqrt(x_axis * K * T * np.log(K)) / 2
+lower_bound = np.sqrt(T * x_axis) / 2
+plt.plot(upper_bound, label=r'$O(\sqrt{KT\log{K}})$')
+plt.plot(lower_bound, label=r'$\Theta(\sqrt{T})$')
 for s in strategies:
     total_regret = np.cumsum(flags.flags_no - results[s][1])
     plt.plot(x_axis, total_regret, label=s)
