@@ -66,9 +66,9 @@ H_{dist} = (47, 53, 31, 36, 34)
 The seeker claims, correctly, that this distribution is
 incorrect. Since the hider selects 2 sites at each timestep $t$ the
 sum of the frequency distribution should be consistent with equation
-\ref{cons}, where $T$ is the number of rounds.
+\ref{cons}, where $T$ is the number of rounds and $dist$ a frequency distribution.
 \begin{equation}\label{cons}
-  \sum_{x_i \in dist}^{sites}x_i = flags * T
+  \sum_{i = 1}^{|dist|}x_i = flags * T
 \end{equation}
 Equation \ref{cons} does not hold for the hider distribution, in fact,
 we have a total sum of $201$ ($\sum_{x_i \in H_{dist}}^{sites}x_i$)
@@ -80,10 +80,27 @@ distribution for the outlined game setting.
   H_{newdist} = (102, 26, 24, 40, 8)
 \end{equation}
 
-
-
-
-
+\section{Answer 2}
+Given the hider's frequency distribution described by equation \ref{hdist2}
+we want to derive the best fixed guess strategy for the seeker.
+\begin{equation}\label{hdist2}
+  H_{dist} = (36, 24, 40, 63, 37)
+\end{equation}
+A fixed guessed strategy is a type of strategy that does not change
+over time and that involves selecting the same action at each
+timestep (the same two sites in a capture the flag game setting). In a
+capture the flag game setting with 2 flags a fixed strategy is any
+binary combination of the sites where the flags can be hidden. Given
+distribution described by equation \ref{hdist2}, the best fixed
+strategy for the seeker is to take the action described by equation
+\ref{besta}.
+\begin{equation}\label{besta}
+  a_{best} = <x_3, x_4> where \:x_3, x_4 \in H_{dist}
+\end{equation}
+In equation \ref{besta}, $x_3$ and $x_4$ describe the sites where the
+hider puts the flags more often, respectively $40$ and $63$ times. The
+best fixed strategy for the seeker, hence, is to select the two sites
+where the flags are most frequently hidden.
 
 
 
