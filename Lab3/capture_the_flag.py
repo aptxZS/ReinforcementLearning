@@ -184,17 +184,38 @@ for s in strategies:
     print(hider.frequencies)
     results[s] = (cumulative_rewards, reward_history)
 
-# Displaying graphs of seeker's regret ==> cumulative reward / rounds_no
+# Plotting seeker's average reward
 for s in strategies:
     reward = results[s][0]
     x_axis = np.linspace(1, rounds_no, rounds_no)
     #   total_regret = np.cumsum(flags_no - reward)
     plt.plot(x_axis, reward / x_axis, label=s)
-    plt.legend()
+plt.xlabel('T')
+plt.ylabel('Avg. reward')
+plt.legend()
+plt.suptitle("Average reward over t", fontsize=16)
 plt.show()
-
+# Plotting seeker's average regret ==> cumulative reward / rounds_no
 for s in strategies:
     regret = 2 - results[s][1]
     plt.plot(x_axis, np.cumsum(regret)/x_axis, label=s)
-    plt.legend()
+plt.xlabel('T')
+plt.ylabel('Avg. regret')
+plt.legend()
+plt.suptitle("Average regret over t", fontsize=16)
+plt.show()
+# Plotting total regret against different strategies
+K = len(hider.actions)
+T = rounds_no
+upper_limit_regret = np.sqrt(x_axis * K * T * np.log(K)) / 2
+lower_limit_regret = np.sqrt(K * 20 * x_axis) / 2
+plt.plot(upper_limit_regret, label=r'$O(\sqrt{KT\log{K}})$')
+plt.plot(lower_limit_regret, label=r'$\Theta(\sqrt{KT})$')
+for s in strategies:
+    total_regret = np.cumsum(flags.flags_no - results[s][1])
+    plt.plot(x_axis, total_regret, label=s)
+plt.xlabel('T')
+plt.ylabel('Regret')
+plt.legend()
+plt.suptitle("Total regret", fontsize=16)
 plt.show()
