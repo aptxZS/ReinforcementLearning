@@ -71,7 +71,7 @@ sum of the frequency distribution should be consistent with equation
   \sum_{i = 1}^{|dist|}x_i = flags * T
 \end{equation}
 Equation \ref{cons} does not hold for the hider distribution, in fact,
-we have a total sum of $201$ ($\sum_{x_i \in H_{dist}}^{sites}x_i$)
+we have a total sum of $201$ ($\sum_{i=1}^{|H_{dist}|}x_i$)
 which is bigger than $200$ ($flags * T$). The frequency distribution
 described by equation \ref{newdist} respects the constraint described
 by equation \ref{cons} and, hence, can be a correct frequency
@@ -142,7 +142,7 @@ via a reward and frequency vector, keep track of their actions
 consequences and update their values in order to minimize the
 opponent's total reward. The seeker's Exp3 algorithm does something
 similar by updating a weight vector, which describes the probability
-of taking an action. In a 2 player capture the flag game setting with 2
+of taking an action. In a 2-player capture the flag game setting with 2
 flags and 5 sites the number of actions is described by all the
 possible unique binary combinations of the sites. The resulting Exp3
 strategy weights against uniform, epsilon-greedy and FPL strategies
@@ -161,8 +161,9 @@ frequency or reward history vectors. We have to note that FPL
 adaptivity strongly depends on the exponential distribution $\eta$
 parameter. When using a fixed $\eta$ the exponential distribution at
 the core of the algorithm does not affect the non-normalized action
-weights anymore. An adaptive $\eta$ is needed in order to not fully
-separate the exploration versus exploitation phases. The code
+weights anymore after a fixed point in time. An adaptive $\eta$ is
+needed in order not to fully
+separate the exploration versus exploitation phase. The code
 implementing the algorithms and plots of the results can be found in
 appendix \ref{appendix}.
 
