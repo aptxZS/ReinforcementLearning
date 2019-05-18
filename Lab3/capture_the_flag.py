@@ -34,7 +34,6 @@ class Flags:
 # Given a flag object computes all the possible actions
 def compute_actions(flags):
     x = np.arange(flags.places_no)
-    # instead of 2 should be number of flags
     mesh = np.array(np.meshgrid(x, x)).T.reshape(-1, 2)
     mesh.sort(axis=1)
     mesh = np.unique(mesh, axis=0)
