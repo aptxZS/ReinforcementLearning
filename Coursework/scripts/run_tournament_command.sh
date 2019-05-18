@@ -1,0 +1,1 @@
+java -cp bin main.RunLemonadeTournament -seed 10 -rounds 1 -repeats 1 -players strategy.UniformStrategy "" strategy.ExternalRegretMatchingStrategy "" strategy.ConstantStrategy "" strategy.InternalRegretMatchingStrategy ""
