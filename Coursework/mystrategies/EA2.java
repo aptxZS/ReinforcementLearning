@@ -29,7 +29,7 @@ public class EA2 implements Strategy{
   int stickCounter;
   int numberOfPlays;  // The t parameter
   ArrayList<Integer> myHistory;
-  
+  double bigGamma;
   
   /**
    * Construct a constant strategy. The game is
@@ -51,6 +51,7 @@ public class EA2 implements Strategy{
     stickCounter = 5;  // stick for the first 5 moves
     numberOfPlays = 0;
     myHistory = new ArrayList<Integer>();
+    bigGamma = 0;
   }
   
   public int getAction() {
@@ -90,29 +91,31 @@ public class EA2 implements Strategy{
 
   // Updates the follow and stick indices of the other two players
   public void updateIndeces() {
-    if(numberOfPlays > 1) {
-      double bigGamma = 0;
-      for(int k = 1; k < numberOfPlays; k++) {
-        bigGamma += Math.pow(smallGamma, numberOfPlays - k);
-        System.out.println(bigGamma);
-      }
-      playerI.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
-      playerJ.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
-      playerI.updateFollowIndeces(smallGamma, bigGamma, numberOfPlays, smallP, playerJ.history, myHistory);
-      playerI.updateFollowIndeces(smallGamma, bigGamma, numberOfPlays, smallP, playerI.history, myHistory);
-      System.out.println(playerI.stickIndex);
-      System.out.println(playerJ.stickIndex);
-    }
+    // double bigGamma = 0;
+    // for(int k = 1; k < numberOfPlays; k++) {
+    //   bigGamma += Math.pow(smallGamma, numberOfPlays - k);
+    // }
+    // System.out.println("Big gamma: " + bigGamma);
+    this.bigGamma += Math.pow(smallGamma, numberOfPlays - 1);
+
+    System.out.println("This big gamma: " + this.bigGamma);
+    System.out.println("number of plays: " + numberOfPlays);
+    playerI.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
+    playerJ.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
+    playerI.updateFollowIndices(smallGamma, bigGamma, numberOfPlays, smallP, playerJ.history, myHistory);
+    playerI.updateFollowIndices(smallGamma, bigGamma, numberOfPlays, smallP, playerI.history, myHistory);
   }
   
   public void observeOutcome(int[] actions) {
     myHistory.add(actions[0]);
     playerI.history.add(actions[1]);
     playerJ.history.add(actions[2]);
-    System.out.println(playerI.history);
-    System.out.println(playerJ.history);
     numberOfPlays++;
-    updateIndeces();
+    if(numberOfPlays > 1) {
+      updateIndeces();
+    }
+    System.out.println(playerI);
+    System.out.println(playerJ);
     // Trying to get the utility I got out of the selected actions (actions[0])
     int currentAction = actions[0];
     int[] possibleUtilities = getPossibleUtilities(actions);
@@ -127,6 +130,5 @@ public class EA2 implements Strategy{
       System.out.println(possibleUtilities[i]);
     }
   }
-  
-  
+    
 }
