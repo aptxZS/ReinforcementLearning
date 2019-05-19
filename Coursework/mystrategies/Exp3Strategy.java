@@ -65,15 +65,15 @@ public class Exp3Strategy implements Strategy{
   }
   
   public int getAction() {
-    for(int i = 0; i < weights.length; i++) {
-      System.out.println(weights[i]);
-    }
-    System.out.println(DoubleStream.of(weights).sum());
+    // for(int i = 0; i < weights.length; i++) {
+    //   System.out.println(weights[i]);
+    // }
+    // System.out.println(DoubleStream.of(weights).sum());
     double weightsSum = DoubleStream.of(weights).sum();
     double[] probabilities = new double[numActions];
     for(int i = 0; i < weights.length; i++) {
       probabilities[i] = (1 - this.GAMMA) * (weights[i] / weightsSum) + (this.GAMMA * 1.0 / numActions);
-      System.out.println(probabilities[i]);
+      // System.out.println(probabilities[i]);
     }
     int action = getActionIndexFromProbabilities(probabilities);
     System.out.println("My action is: " + action);
