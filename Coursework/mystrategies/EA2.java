@@ -63,14 +63,17 @@ public class EA2 implements Strategy{
     stickCounter--;
     if(stickCounter > 0) {  // C0: stick
       System.out.println("My action is: " + lastAction);
+      System.out.println("Playing C0");
       return lastAction;
     }
     // C1: Player i has higher stick index that its follow index and player j stick or follow index --> sit opposite player i
-    if(playerI.stickIndex > playerI.followIndex + tol && (playerI.stickIndex > playerJ.stickIndex + tol || playerI.stickIndex > playerJ.followIndex + tol)) {
+    if(playerI.stickIndex > playerI.followIndex - tol && (playerI.stickIndex > playerJ.stickIndex - tol || playerI.stickIndex > playerJ.followIndex - tol)) {
+      System.out.println("Playing C1");
       return EA2Player.oppositeLocation(playerI.history.get(playerI.history.size()-1));
     }
     // C2: Both player i and j have high stick indices
-    if(playerI.stickIndex > playerI.followIndex + tol && playerJ.stickIndex > playerJ.followIndex + tol) {
+    if(playerI.stickIndex > playerI.followIndex - tol && playerJ.stickIndex > playerJ.followIndex - tol) {
+      System.out.println("Playing C2");
       // C2.1: utility > 8 --> Stick and set stickCount to T
       if(currentUtility > 8) {
         // We assume initialStick is T
@@ -83,7 +86,8 @@ public class EA2 implements Strategy{
           EA2Player.oppositeLocation(playerJ.history.get(playerJ.history.size()-1));
     }
     // C3: Player i has higher follow index than stick index and player j stick or follow index.
-    if (playerI.followIndex > playerI.stickIndex + tol && (playerI.stickIndex > playerJ.stickIndex + tol || playerI.stickIndex > playerJ.followIndex + tol)) {
+    if (playerI.followIndex > playerI.stickIndex - tol && (playerI.stickIndex > playerJ.stickIndex - tol || playerI.stickIndex > playerJ.followIndex - tol)) {
+      System.out.println("Playing C3");
       // C3.1: player i is following me --> stick
       if(playerI.follow0 > playerI.followOther) {
         return lastAction;
@@ -92,17 +96,21 @@ public class EA2 implements Strategy{
       return playerJ.history.get(playerJ.history.size()-1);
     }
     // C4: Both player i and j have high follow indices and are following each other --> sit on the opponent with the highest follow index
-    if(playerI.followIndex > playerI.stickIndex + tol && playerJ.followIndex > playerJ.stickIndex + tol
+    if(playerI.followIndex > playerI.stickIndex - tol && playerJ.followIndex > playerJ.stickIndex - tol
        && playerI.followOther > playerI.follow0 && playerJ.followOther > playerJ.follow0) {
+      System.out.println("Playing C4");
       return playerI.followIndex > playerJ.followIndex ? playerI.history.get(playerI.history.size()-1) :
           playerJ.history.get(playerJ.history.size()-1);
     }
     // C5: Players i and j are sitting opposite to each other --> play carrot and stick --> sit on opponent with lower stick index
     if(EA2Player.oppositeLocation(playerI.history.get(playerI.history.size() - 1)) == EA2Player.oppositeLocation(playerJ.history.get(playerJ.history.size() - 1))) {
+      System.out.println("Playing C5");
       return playerI.stickIndex < playerJ.stickIndex ? playerI.history.get(playerI.history.size()-1) :
           playerJ.history.get(playerJ.history.size()-1);
     }
-    // System.out.println("My action is: " + constantAction);
+    // C6: No condition satisfied
+    System.out.println("Playing C6");
+    //System.out.println("My action is: " + constantAction);
     return lastAction;
   }
 
@@ -140,8 +148,8 @@ public class EA2 implements Strategy{
     // }
     // System.out.println("Big gamma: " + bigGamma);
     this.bigGamma += Math.pow(smallGamma, numberOfPlays - 1);
-    System.out.println("This big gamma: " + this.bigGamma);
-    System.out.println("number of plays: " + numberOfPlays);
+    // System.out.println("This big gamma: " + this.bigGamma);
+    // System.out.println("number of plays: " + numberOfPlays);
     playerI.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
     playerJ.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
     playerI.updateFollowIndices(smallGamma, bigGamma, numberOfPlays, smallP, playerJ.history, myHistory);
@@ -156,9 +164,10 @@ public class EA2 implements Strategy{
     if(numberOfPlays > 1) {
       updateIndeces();
     }
-    System.out.println(playerI);
-    System.out.println(playerJ);
+    // System.out.println(playerI);
+    // System.out.println(playerJ);
     // Trying to get the utility I got out of the selected actions (actions[0])
+    System.out.println("My action is: " + lastAction);
     lastAction = actions[0];
     int[] possibleUtilities = getPossibleUtilities(actions);
     currentUtility = possibleUtilities[lastAction];
