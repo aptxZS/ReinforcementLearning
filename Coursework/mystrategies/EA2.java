@@ -27,6 +27,7 @@ public class EA2 implements Strategy{
   static final double smallP = 0.5;  // The scal parameter
   static final double tol = 0.1;  // The tollerance for the conditions to hold
   static final int initialStick = 6;
+  static final int T = 2;
   int stickCounter;
   int numberOfPlays;  // The t parameter
   ArrayList<Integer> myHistory;
@@ -77,11 +78,11 @@ public class EA2 implements Strategy{
       // C2.1: utility > 8 --> Stick and set stickCount to T
       if(currentUtility > 8) {
         // We assume initialStick is T
-        stickCounter = initialStick;
+        stickCounter = T;
         return lastAction;
       }
       // C2.2: utility <= 8 --> sit opposite the stickiest and set stickCount to T
-      stickCounter = initialStick;
+      stickCounter = T;
       return playerI.stickIndex > playerJ.stickIndex ? EA2Player.oppositeLocation(playerI.history.get(playerI.history.size()-1)) :
           EA2Player.oppositeLocation(playerJ.history.get(playerJ.history.size()-1));
     }
