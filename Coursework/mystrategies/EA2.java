@@ -26,10 +26,13 @@ public class EA2 implements Strategy{
   static final double smallGamma = 0.75;  // The response rate
   static final double smallP = 0.5;  // The scal parameter
   static final double tol = 0.1;  // The tollerance for the conditions to hold
+  static final int initialStick = 6;
   int stickCounter;
   int numberOfPlays;  // The t parameter
   ArrayList<Integer> myHistory;
   double bigGamma;
+  int currentUtility;
+  int lastAction;
   
   /**
    * Construct a constant strategy. The game is
@@ -44,23 +47,63 @@ public class EA2 implements Strategy{
   public EA2(Game g, long seed, String options) {
     this.numActions = g.getNumActions();
     Random r = new Random(seed);
-    constantAction = r.nextInt(numActions);
+    lastAction = constantAction = r.nextInt(numActions);
     this.utility = g.getUtility();
     playerI = new EA2Player();
     playerJ = new EA2Player();
-    stickCounter = 5;  // stick for the first 5 moves
+    stickCounter = initialStick;  // stick for the first 5 moves
     numberOfPlays = 0;
     myHistory = new ArrayList<Integer>();
     bigGamma = 0;
+    currentUtility = 0;
   }
   
   public int getAction() {
-    if(stickCounter > 0) {  // 1st condition
-      System.out.println("My action is: " + constantAction);
-      return constantAction;
+    // Resetting initial stickCounter
+    stickCounter--;
+    if(stickCounter > 0) {  // C0: stick
+      System.out.println("My action is: " + lastAction);
+      return lastAction;
     }
-    System.out.println("My action is: " + constantAction);
-    return constantAction;
+    // C1: Player i has higher stick index that its follow index and player j stick or follow index --> sit opposite player i
+    if(playerI.stickIndex > playerI.followIndex + tol && (playerI.stickIndex > playerJ.stickIndex + tol || playerI.stickIndex > playerJ.followIndex + tol)) {
+      return EA2Player.oppositeLocation(playerI.history.get(playerI.history.size()-1));
+    }
+    // C2: Both player i and j have high stick indices
+    if(playerI.stickIndex > playerI.followIndex + tol && playerJ.stickIndex > playerJ.followIndex + tol) {
+      // C2.1: utility > 8 --> Stick and set stickCount to T
+      if(currentUtility > 8) {
+        // We assume initialStick is T
+        stickCounter = initialStick;
+        return lastAction;
+      }
+      // C2.2: utility <= 8 --> sit opposite the stickiest and set stickCount to T
+      stickCounter = initialStick;
+      return playerI.stickIndex > playerJ.stickIndex ? EA2Player.oppositeLocation(playerI.history.get(playerI.history.size()-1)) :
+          EA2Player.oppositeLocation(playerJ.history.get(playerJ.history.size()-1));
+    }
+    // C3: Player i has higher follow index than stick index and player j stick or follow index.
+    if (playerI.followIndex > playerI.stickIndex + tol && (playerI.stickIndex > playerJ.stickIndex + tol || playerI.stickIndex > playerJ.followIndex + tol)) {
+      // C3.1: player i is following me --> stick
+      if(playerI.follow0 > playerI.followOther) {
+        return lastAction;
+      }
+      // C3.2: player i is following j --> sit on j
+      return playerJ.history.get(playerJ.history.size()-1);
+    }
+    // C4: Both player i and j have high follow indices and are following each other --> sit on the opponent with the highest follow index
+    if(playerI.followIndex > playerI.stickIndex + tol && playerJ.followIndex > playerJ.stickIndex + tol
+       && playerI.followOther > playerI.follow0 && playerJ.followOther > playerJ.follow0) {
+      return playerI.followIndex > playerJ.followIndex ? playerI.history.get(playerI.history.size()-1) :
+          playerJ.history.get(playerJ.history.size()-1);
+    }
+    // C5: Players i and j are sitting opposite to each other --> play carrot and stick --> sit on opponent with lower stick index
+    if(EA2Player.oppositeLocation(playerI.history.get(playerI.history.size() - 1)) == EA2Player.oppositeLocation(playerJ.history.get(playerJ.history.size() - 1))) {
+      return playerI.stickIndex < playerJ.stickIndex ? playerI.history.get(playerI.history.size()-1) :
+          playerJ.history.get(playerJ.history.size()-1);
+    }
+    // System.out.println("My action is: " + constantAction);
+    return lastAction;
   }
 
   public static String arrayToSimpleString(int[] actions){
@@ -97,7 +140,6 @@ public class EA2 implements Strategy{
     // }
     // System.out.println("Big gamma: " + bigGamma);
     this.bigGamma += Math.pow(smallGamma, numberOfPlays - 1);
-
     System.out.println("This big gamma: " + this.bigGamma);
     System.out.println("number of plays: " + numberOfPlays);
     playerI.updateStickIndex(smallGamma, bigGamma, numberOfPlays, smallP);
@@ -117,9 +159,10 @@ public class EA2 implements Strategy{
     System.out.println(playerI);
     System.out.println(playerJ);
     // Trying to get the utility I got out of the selected actions (actions[0])
-    int currentAction = actions[0];
+    lastAction = actions[0];
     int[] possibleUtilities = getPossibleUtilities(actions);
-    System.out.println("My utility is: " + possibleUtilities[currentAction]);
+    currentUtility = possibleUtilities[lastAction];
+    // System.out.println("My utility is: " + possibleUtilities[currentAction]);
     // observeUtilities(possibleUtilities,currentAction);
   }
 
