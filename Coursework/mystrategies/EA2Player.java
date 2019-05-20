@@ -7,7 +7,7 @@ public class EA2Player {
 
   double stickIndex, followIndex, followOther, follow0;
   ArrayList<Integer> history;
-  double upperLimit;
+  static double upperLimit;
 
   public EA2Player() {
     stickIndex = followIndex = followOther = follow0 = 0;
@@ -15,7 +15,7 @@ public class EA2Player {
     upperLimit = 12;
   }
 
-  private int oppositeLocation(int location) {
+  public static int oppositeLocation(int location) {
     int half = (int) upperLimit / 2;
     return location >=  half ? location - half : location + half;
   }
