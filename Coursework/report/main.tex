@@ -5,6 +5,7 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage[toc,page]{appendix}
 \usepackage{listings}
@@ -74,20 +75,42 @@ on how much points are assigned for a single spot. We use the
 $U_{spot}$ variable to indicate this measure and $R_{total}$ to
 indicate the total revenue of a single round. Equation \ref{points} shows
 how the total number of points for a round are calculated.
-\begin{equation}\label{points}
-R_{total} = U_{spot} \times positions \times 2
-\end{equation}
 Equation \ref{points} multiplies the total number of points that the
 spots generate by two since every point is collected by two
 agents. Assigning $1$ to the unit spot variable leads to a total
 revenue per round of $24$, while assigning $6$ to the spot variable
 leads to a $144$ total revenue.
-In this paper, we described and evaluate different algorithmic
+\begin{equation}\label{points}
+R_{total} = U_{spot} \times positions \times 2
+\end{equation}
+The aim of each agent is, hence, to be as far as possible from the
+other players, in order to maximize his individual total revenue for the n rounds
+played. In this paper, we describe and evaluate different algorithmic
 strategies to play the Lemonade Stand Game.
 
 \section{Algorithm design}
+In this section we describe the design of the implemented
+algorithms. This section is divided into two subsection, each
+describing a different class of algorithms. 
 
 \subsection{Game agnostic algorithms}
+This class of algorithms include strategies that reduce the game
+to a multi-armed bandit setting. These algorithms are based on
+evaluative feedback of the actions taken and do not have any internal
+representation of the game or its rules. Given an array
+of actions, the value of each of them, $q_*(a)$ at time step $t$ is the expected
+reward $R_t$ returned when that action is taken, as equation \ref{eq2}
+shows \cite{rlbook}:
+\begin{equation}\label{eq2}
+  q_*(a) \doteq \mathbb{E}(R_t | A_t = a)
+\end{equation}
+The aim of a multi-armed bandit algorithm is to derive an estimated
+value for each action at time step $t$, $Q_t(a)$, as close as possible
+to the real value $q_*(a)$. Exploration and exploitation techniques
+are fundamental for this class of algorithms. The former allows to
+obtain more accurate actions estimators. The latter allows to maximize
+the reward by exploiting the current knowledge state.
+
 \subsubsection{Exp3 algorithm}
 \subsubsection{Epsilon greedy algorithm}
 
