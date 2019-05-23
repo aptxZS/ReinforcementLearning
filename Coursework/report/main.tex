@@ -113,20 +113,36 @@ the reward by exploiting the current knowledge state.
 
 \subsubsection{Exp3 algorithm}
 The Exp3 algorithm implements an instance of the multi-armed bandit
-algorithmic class. Given K actions, the Exp3 algorithm keeps track of
+algorithms family \cite{exp3}. Given K actions, the Exp3 algorithm keeps track of
 K-length weight and probability vectors, initialized respectively at 1
-and $1/K$. The probability vector
-assigns a probability to each action that is calculated according to
-the weight given to that action. Actions with higher weights obtain an
-higher probability. At every turn the action is selected according to
-the probability vector. The reward of the selected action is then used
-to update the weight of that action by exploiting the exponential
-distribution. The exponential distribution increments the weights of
-the highest-reward actions guaranteeing exploitation. On the other hand,
-exploration is guaranteed by the $\gamma$ parameter which describe the
-probability to draw a uniform random action when selecting it.
+and $1/K$. The probability vector assigns a probability to each action
+that is calculated according to the weight given to that
+action. Actions with higher weights obtain an higher probability. At
+every turn the action is selected according to the probability
+vector. The reward of the selected action is then used to update the
+weight of that action by exploiting the exponential distribution. The
+exponential distribution increments the weights of the highest-reward
+actions guaranteeing exploitation. On the other hand, exploration is
+guaranteed by the gamma parameter, $\gamma \in (0, 1]$, which describe the probability to
+draw a uniform random action when selecting it. The regret, the bound
+describing the difference from the optimal algorithm, of Exp3 is
+limited to $O(\sqrt{KTlog(K)})$, which makes it theoretically
+efficient.
 
 \subsubsection{Epsilon greedy algorithm}
+The epsilon greedy algorithm ($\epsilon$-greedy) is another type of
+multi-armed bandit algorithm. Given K actions, $\epsilon$-greedy keeps
+track of frequency and rewards vectors, initialized both at 0. The
+frequency vector keeps track of how many times an action has been
+selected. The rewards vector contains a value estimation of the
+actions. The epsilon parameter, $\epsilon \in (0, 1]$, guarantees that
+the algorithm balances between exploration and exploitation. Epsilon
+greedy selects a random action, exploration, with probability
+$\epsilon$ and greedily selects the action with higher value with
+probability $1 - \epsilon$. The reward of the selected action is then
+averaged with the frequency of that action and the previous estimated
+value to update the rewards vector.
+
 
 \subsection{Heuristic based algorithms}
 \subsubsection{Stick and follow algorithm}
@@ -140,8 +156,23 @@ probability to draw a uniform random action when selecting it.
 \begin{thebibliography}{8}
 
 \bibitem{rlbook}
-Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An introduction.
+Sutton, R.S. and Barto, A.G., 2011. Reinforcement learning: An
+introduction.
 
+\bibitem{exp3}
+Auer, P., Cesa-Bianchi, N., Freund, Y. and Schapire, R.E., 2002. The
+nonstochastic multiarmed bandit problem. SIAM journal on computing,
+32(1), pp.48-77.
+
+\bibitem{egreedy}
+Kuleshov, V. and Precup, D., 2014. Algorithms for multi-armed bandit
+problems. arXiv preprint arXiv:1402.6028.
+
+\bibitem{ea2}
+Sykulski, A.M., Chapman, A.C., De Cote, E.M. and Jennings, N.R., 2010,
+January. EA2: The Winning Strategy for the Inaugural Lemonade Stand
+Game Tournament. In ECAI (pp. 209-214).
+  
 \end{thebibliography}
 
 \section{Appendix A: source code}\label{appendix}
