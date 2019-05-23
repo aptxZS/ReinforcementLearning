@@ -100,16 +100,17 @@ evaluative feedback of the actions taken and do not have any internal
 representation of the game or its rules. Given an array
 of actions, the value of each of them, $q_*(a)$, at time step $t$ is the expected
 reward $R_t$ returned when that action is taken, as equation \ref{eq2}
-shows \cite{rlbook}:
+shows \cite{rlbook}.
 \begin{equation}\label{eq2}
   q_*(a) \doteq \mathbb{E}(R_t | A_t = a)
 \end{equation}
-The aim of a multi-armed bandit algorithm is to derive an estimated
-value for each action at time step $t$, $Q_t(a)$, as close as possible
-to the real value $q_*(a)$. Exploration and exploitation techniques
-are fundamental for this class of algorithms. The former allows to
-obtain more accurate actions estimators. The latter allows to maximize
-the reward by exploiting the current knowledge state.
+The aim of a multi-armed bandit algorithms is to maximize the total reward
+by deriving an estimated value for each action at time step
+$t$, $Q_t(a)$, as close as possible to the real value
+$q_*(a)$. Exploration and exploitation techniques are fundamental for
+this class of algorithms. The former allows to obtain more accurate
+actions estimators. The latter allows to maximize the reward by
+exploiting the current knowledge state.
 
 \subsubsection{Exp3 algorithm}
 The Exp3 algorithm implements an instance of the multi-armed bandit
@@ -131,7 +132,7 @@ efficient.
 
 \subsubsection{Epsilon greedy algorithm}
 The epsilon greedy algorithm ($\epsilon$-greedy) is another type of
-multi-armed bandit algorithm. Given K actions, $\epsilon$-greedy keeps
+multi-armed bandit algorithm \cite{egreedy}. Given K actions, $\epsilon$-greedy keeps
 track of frequency and rewards vectors, initialized both at 0. The
 frequency vector keeps track of how many times an action has been
 selected. The rewards vector contains a value estimation of the
@@ -145,7 +146,35 @@ value to update the rewards vector.
 
 
 \subsection{Heuristic based algorithms}
+This class of algorithms include strategies that have an internal
+representation of the game. The internal knowledge of the game is
+exploited, via heuristic functions, in a strategic manner in order to
+maximize the total reward.
+
 \subsubsection{Stick and follow algorithm}
+This algorithm implements a simple, and yet, effective heuristic-based
+strategy. It is based on a simplified version of the ACT-R cognitive
+architecture \cite{act-r}. In the initial phase of the game, the first 5
+rounds, the algorithm chooses a random action (1 of the 12 available
+positions) and sticks to it. This is done in order to attract another
+cooperative player to select the opposite position and, as a result,
+maximize both utilities. The second phase of the game strategy is
+determined by an heuristic strategy. The algorithm analyzes the reward
+of the last performed action and compares it to a fixed utility
+threshold (implemented as 7 when $U_{spot} = 1$). This leads to the
+following two cases:
+\begin{enumerate}
+\item \textit{Last reward $>$ threshold}: the algorithm sticks to the
+  current position.
+\item \textit{Last reward $\leq$ threshold}: the algorithm picks an
+  opponent player randomly and sits opposite to his last position.
+\end{enumerate}
+The design of the heuristic function guarantees that the player does
+not continue sticking in a poor reward position and limits collusion
+of the other two players. In the case of the two other player
+colluding, the stick and follow strategy will break the their strategy
+by sitting on top of one of the two players (case number 2). 
+
 \subsubsection{EA2 algorithm}
 
 
@@ -172,6 +201,13 @@ problems. arXiv preprint arXiv:1402.6028.
 Sykulski, A.M., Chapman, A.C., De Cote, E.M. and Jennings, N.R., 2010,
 January. EA2: The Winning Strategy for the Inaugural Lemonade Stand
 Game Tournament. In ECAI (pp. 209-214).
+
+\bibitem{act-r}
+Reitter, D., Juvina, I., Stocco, A. and Lebiere, C., 2010. Resistance
+is futile: Winning lemonade market share through metacognitive
+reasoning in a three-agent cooperative game. Proceedings of the 19th
+behavior representation in modeling \& simulation (BRIMS). Charleston,
+SC.
   
 \end{thebibliography}
 
