@@ -98,7 +98,7 @@ This class of algorithms include strategies that reduce the game
 to a multi-armed bandit setting. These algorithms are based on
 evaluative feedback of the actions taken and do not have any internal
 representation of the game or its rules. Given an array
-of actions, the value of each of them, $q_*(a)$ at time step $t$ is the expected
+of actions, the value of each of them, $q_*(a)$, at time step $t$ is the expected
 reward $R_t$ returned when that action is taken, as equation \ref{eq2}
 shows \cite{rlbook}:
 \begin{equation}\label{eq2}
@@ -112,6 +112,20 @@ obtain more accurate actions estimators. The latter allows to maximize
 the reward by exploiting the current knowledge state.
 
 \subsubsection{Exp3 algorithm}
+The Exp3 algorithm implements an instance of the multi-armed bandit
+algorithmic class. Given K actions, the Exp3 algorithm keeps track of
+K-length weight and probability vectors, initialized respectively at 1
+and $1/K$. The probability vector
+assigns a probability to each action that is calculated according to
+the weight given to that action. Actions with higher weights obtain an
+higher probability. At every turn the action is selected according to
+the probability vector. The reward of the selected action is then used
+to update the weight of that action by exploiting the exponential
+distribution. The exponential distribution increments the weights of
+the highest-reward actions guaranteeing exploitation. On the other hand,
+exploration is guaranteed by the $\gamma$ parameter which describe the
+probability to draw a uniform random action when selecting it.
+
 \subsubsection{Epsilon greedy algorithm}
 
 \subsection{Heuristic based algorithms}
