@@ -56,6 +56,34 @@
 %
 
 \section{Introduction}
+The aim of this project is to develop algorithmic strategies to play
+the Lemonade Stand Game (LSG). The LSG is a three agents game with a
+12 positions setting, distributed like the hours on a clock.  At every
+round, each player chooses a spot to put his stand on, $A_i = {P_1, ...,
+  P_{12}}$. Every player chooses at the same time, without knowing the
+choice of the other players at the current round since communication
+between agents is not allowed. After each round, the utility of a
+player is calculated as the sum of the distances between the closest
+clockwise player and the closest anticlockwise player. The only
+exception to this is when two or all players are sitting on the same
+spot. In the first case the two players sitting in the same spot
+collect a quarter of the total revenue of a single round while the
+third collects half of it. In the second case each agent collects a
+third of the total revenue. The total points given at each round depend
+on how much points are assigned for a single spot. We use the 
+$U_{spot}$ variable to indicate this measure and $R_{total}$ to
+indicate the total revenue of a single round. Equation \ref{points} shows
+how the total number of points for a round are calculated.
+\begin{equation}\label{points}
+R_{total} = U_{spot} \times positions \times 2
+\end{equation}
+Equation \ref{points} multiplies the total number of points that the
+spots generate by two since every point is collected by two
+agents. Assigning $1$ to the unit spot variable leads to a total
+revenue per round of $24$, while assigning $6$ to the spot variable
+leads to a $144$ total revenue.
+In this paper, we described and evaluate different algorithmic
+strategies to play the Lemonade Stand Game.
 
 \section{Algorithm design}
 
