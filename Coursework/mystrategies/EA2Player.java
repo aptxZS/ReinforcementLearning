@@ -24,10 +24,8 @@ public class EA2Player {
     double result = 0;
     for(int k = 1; k < numberOfPlays; k++) {
       double x = Math.pow(smallGamma, numberOfPlays - k) / bigGamma;
-      // System.out.println("k: " + history.get(k) + " k-1: " + history.get(k-1));
       double diff = (upperLimit + history.get(k) - history.get(k-1)) % upperLimit;
       double distance = diff < upperLimit - diff ? diff : upperLimit - diff;
-      // System.out.println(distance);
       result += x * Math.pow(distance, smallP);
     }
     stickIndex = -result;
