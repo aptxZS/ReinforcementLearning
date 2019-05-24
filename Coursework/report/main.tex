@@ -321,6 +321,23 @@ against two players colluding without changing their strategy or
 considering the third player.
 
 \section{Conclusion}
+In this paper we have described the design and evaluation of different
+strategies to play the Lemonade Stand Game. We have analyzed both
+multi-armed bandit and heuristic-based class of algorithms. The
+results suggest that having internal knowledge of the game increases
+the players performance. Complex heuristics lead to an even more
+consistent improvement, as the EA$^2$ algorithm performing better than
+all the other strategies shows.
+
+Further research regarding multi-armed bandit algorithms for this
+setting should consider weighting the actions not only based on the
+obtained reward but also on the board configuration when that action
+was taken in order to exploit opponents patterns. On the other hand,
+the research regarding the heuristic-based algorithms should aim at
+increasing the classes of the type of players in order to model and
+exploit opponents that model strategies that differ from a sticker and
+a follower type.
+
 
 \begin{thebibliography}{8}
 
