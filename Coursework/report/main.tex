@@ -26,7 +26,7 @@
 
 \begin{document}
 %
-\title{Reinforcement learning - Coursework}
+\title{Reinforcement and Online Learning \; Coursework}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -247,7 +247,7 @@ following a uniform distribution.
 every round. If present, the subscribed number following the constant
 strategy indicates the action number.
 \end{itemize}
-The results were produced by iteratively running the same game setting
+The results were produced by iteratively running the same 100 rounds game setting
 for 50 times with different random seeds and then averaging the
 rewards. We can observe the obtained results in table \ref{result-table}.
 \begin{table}[h!]
@@ -369,10 +369,20 @@ SC.
 \end{thebibliography}
 
 \section{Appendix A: source code}\label{appendix}
-This appendix section contains the source code of the implemented program.
+This appendix section contains the source code of the implemented algorithms.
 
-%% \subsection{capture\_the\_flag.py}\label{capture_the_flag.py}
-%% \lstinputlisting[language=Python]{../capture_the_flag.py}
+\subsection{Exp3}
+\lstinputlisting[language=Java]{../mystrategies/Exp3Strategy.java}
+
+\subsection{Egreedy}
+\lstinputlisting[language=Java]{../mystrategies/Egreedy.java}
+
+\subsection{Stick and Follow}
+\lstinputlisting[language=Java]{../mystrategies/StickAndFollow.java}
+
+\subsection{EA$^2$}
+\lstinputlisting[language=Java]{../mystrategies/EA2.java}
+\lstinputlisting[language=Java]{../mystrategies/EA2Player.java}
 
 
 \end{document}
