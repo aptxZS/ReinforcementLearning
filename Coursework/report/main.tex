@@ -95,7 +95,7 @@ describing a different class of algorithms. The code of the
 implemented strategies can be found in section \ref{appendix}.
 
 \subsection{Game agnostic algorithms}
-This class of algorithms include strategies that reduce the game
+This class of algorithms includes strategies that reduce the game
 to a multi-armed bandit setting. These algorithms are based on
 evaluative feedback of the actions taken and do not have any internal
 representation of the game or its rules. Given an array
@@ -122,11 +122,11 @@ that is calculated according to the weight given to that
 action. Actions with higher weights obtain an higher probability. At
 every turn the action is selected according to the probability
 vector. The reward of the selected action is then used to update the
-weight of that action by exploiting the exponential distribution. The
+weight of that action by using the exponential distribution. The
 exponential distribution increments the weights of the highest-reward
 actions guaranteeing exploitation. On the other hand, exploration is
-guaranteed by the gamma parameter, $\gamma \in (0, 1]$, which describe the probability to
-draw a uniform random action when selecting it. The regret, the bound
+guaranteed by the gamma parameter, $\gamma \in (0, 1]$, which describes the probability to
+draw a uniform random action when selecting it. The external regret, the bound
 describing the difference from the optimal algorithm, of Exp3 is
 limited to $O(\sqrt{KTlog(K)})$, which makes it theoretically
 efficient.
@@ -141,13 +141,13 @@ actions. The epsilon parameter, $\epsilon \in (0, 1]$, guarantees that
 the algorithm balances between exploration and exploitation. Epsilon
 greedy selects a random action, exploration, with probability
 $\epsilon$ and greedily selects the action with higher value with
-probability $1 - \epsilon$. The reward of the selected action is then
+probability $1 - \epsilon$, exploitation. The reward of the selected action is then
 averaged with the frequency of that action and the previous estimated
 value to update the rewards vector.
 
 
 \subsection{Heuristic based algorithms}
-This class of algorithms include strategies that have an internal
+This class of algorithms includes strategies that have an internal
 representation of the game. The internal knowledge of the game is
 exploited, via heuristic functions, in a strategic manner in order to
 maximize the total reward.
@@ -187,11 +187,11 @@ describes players that stick at one or a few locations for the entire
 duration of the game. The second one describes players that tend to
 sit opposite to other players in order to maximize their reward. The
 classification is not binary and is computed by keeping indices on the
-opponents behaviour. A stick index defines how close a player is to an
+opponents behaviour. A stick index defines how close a player is to the
 ideal stick strategy, see equation \ref{eq3}. A general follow index
-defines how close a player is to the ideal follow strategy \ref{eq5}. Two
+defines how close a player is to the ideal follow strategy, see equation \ref{eq5}. Two
 additional player specific follow indices describe which of his
-opponents the player is following \ref{eq4}.
+opponents the player is following, see equation \ref{eq4}.
 \begin{equation}\label{eq3}
   s_i = - \sum_{k = 2}^{t-1}\frac{\gamma^{t-1-k}}{\Gamma}d(a_i(k), a_i(k-1))^p
 \end{equation}
@@ -208,7 +208,7 @@ the previous position of player $j$, while $a_j^*(k-1)$ describes the
 position opposite to player $j$. The $\gamma$ response parameter is
 used to weight past events, like in the reinforcement learning
 temporal difference method. The parameter $p$ defines the ideal type
-acceptance interval, whether to include in ideal types noisy players
+acceptance interval, whether to include in strategy classification noisy players
 that play similarly to an ideal strategy.
 
 The indices are computed at each time step and they are needed to
@@ -224,7 +224,7 @@ are described by the following ordered condition rules:
 \item Player $i$ is a follower more than player $j$ $\Rightarrow$
   if player $i$ is following $j$ sit on player $j$ otherwise stick.
 \item Players $i$ and $j$ are following each other $\Rightarrow$
-  choose the opponent with highest follow index and sit his position. 
+  choose the opponent with highest follow index and sit on his position. 
 \item Players $i$ and $j$ are sitting opposite to each other
   $\Rightarrow$ sit on the opponent with lower stick index to make it
   move.
@@ -237,7 +237,7 @@ reward.
 \section{Evaluation}
 The implemented strategies have been extensively tested under
 different scenarios with different players. We chose a game setting
-consisting of $U_{spot} = 6$, meaning that the total reward per round
+consisting of 100 rounds and $U_{spot} = 6$, meaning that the total reward per round
 is 144. We used the following additional strategies for testing
 purposes:
 \begin{itemize}
@@ -249,7 +249,7 @@ strategy indicates the action number.
 \end{itemize}
 The results were produced by iteratively running the same 100 rounds game setting
 for 50 times with different random seeds and then averaging the
-rewards. We can observe the obtained results in table \ref{result-table}.
+rewards. We can see the obtained results in table \ref{result-table}.
 \begin{table}[h!]
 \centering
 \caption{Evaluation results of the 4 implemented strategies}
@@ -297,8 +297,8 @@ to coordinate with the right opponent. Exp3 action selection, subject
 to probabilities given by the weight vector, does not allow to
 continuously exploit the best position as Egreedy argmax action
 selection does. We can also note that EA$^2$ player indices allow the
-algorithm to faster convergence to collusion, while Egreedy and
-Stick and Follow strategy are slowed down, respectively, by
+algorithm for faster convergence to collusion, while Egreedy and
+Stick and Follow strategies are slowed down, respectively, by
 exploration and random opponent selection.
 
 Playing against two opponents that could possibly cooperate is another
