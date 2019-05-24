@@ -175,8 +175,63 @@ of the other two players. In the case of the two other player
 colluding, the stick and follow strategy will break the their strategy
 by sitting on top of one of the two players (case number 2). 
 
-\subsubsection{EA2 algorithm}
+\subsubsection{EA$^2$ algorithm}
+This algorithm implements the winning strategy of the inaugural
+Lemonade Stand Game Tournament \cite{ea2}. This heuristic based
+strategy has at its core the analysis of the opponents' history of
+game interactions in order to classify them and exploit their
+behaviour. The algorithm classifies the opponents' strategies into two
+generic classes: a stick and a follow strategy. The first one
+describes players that stick at one or a few locations for the entire
+duration of the game. The second one describes players that tend to
+sit opposite to other players in order to maximize their reward. The
+classification is not binary and is computed by keeping indices on the
+opponents behaviour. A stick index defines how close a player is to an
+ideal stick strategy, see equation \ref{eq3}. A general follow index
+defines how close a player is to the ideal follow strategy \ref{eq5}. Two
+additional player specific follow indices describe which of his
+opponents the player is following \ref{eq4}.
+\begin{equation}\label{eq3}
+  s_i = - \sum_{k = 2}^{t-1}\frac{\gamma^{t-1-k}}{\Gamma}d(a_i(k), a_i(k-1))^p
+\end{equation}
+\begin{equation}\label{eq4}
+f_{ij} = - \sum_{k = 2}^{t-1}\frac{\gamma^{t-1-k}}{\Gamma}d(a_i(k), a_j^*(k-1))^p
+\end{equation}
+\begin{equation}\label{eq5}
+f_{i} = - \sum_{k = 2}^{t-1}\frac{\gamma^{t-1-k}}{\Gamma}\min_{j = N \setminus i}[d(a_i(k), a_j^*(k-1))]^p
+\end{equation}
+where $t$ represents the current time step, $\Gamma = \sum_{k =
+  2}^{t-1}\gamma^{t-1-k}$, $d(a_i(k), a_j(k-1))$ represents the
+smaller distance between the current position of player $i$ and
+the previous position of player $j$, while $a_j^*(k-1)$ describes the
+position opposite to player $j$. The $\gamma$ response parameter is
+used to weight past events, like in the reinforcement learning
+temporal difference method. The parameter $p$ defines the ideal type
+acceptance interval, whether to include in ideal types noisy players
+that play similarly to an ideal strategy.
 
+The indices are computed at each time step and they are needed to
+select the next action. The heuristics used to select the next action
+are described by the following ordered condition rules:
+\begin{enumerate}
+\item Player $i$ is a sticker more than player $j$. Furthermore, his
+  stick index is bigger than its follow index and player $j$
+  one $\Rightarrow$ sit opposite to player $i$.
+\item Both opposite players have high stick index $\Rightarrow$ stick
+  if utility bigger than 8 otherwise sit opposite to the player with
+  higher stick index.
+\item Player $i$ is a follower more than player $j$ $\Rightarrow$
+  if player $i$ is following $j$ sit on player $j$ otherwise stick.
+\item Players $i$ and $j$ are following each other $\Rightarrow$
+  choose the opponent with highest follow index and sit his position. 
+\item Players $i$ and $j$ are sitting opposite to each other
+  $\Rightarrow$ sit on the opponent with lower stick index to make it
+  move.
+\item None of the above applies $\Rightarrow$ stick in current position.
+\end{enumerate}
+The heuristic rules cover a large array of different possible
+situations and strategies to exploit them and maximize the agent total
+reward.
 
 \section{Evaluation}
 
