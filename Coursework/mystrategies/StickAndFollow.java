@@ -36,13 +36,10 @@ public class StickAndFollow implements Strategy{
       // Take a random opponent and sit opposite to its previous spot.
       if(Math.random() < 0.5) {
         myAction = (opponentsLastAction[0] + (numActions / 2)) % numActions;
-        System.out.println("Previuous opp action is: " + opponentsLastAction[0]);
       } else {
         myAction = (opponentsLastAction[1] + (numActions / 2)) % numActions;
-        System.out.println("Previuous opp action is: " + opponentsLastAction[1]);
       }
     }
-    System.out.println("My action is: " + myAction);
     return myAction;
   }
 
@@ -67,7 +64,6 @@ public class StickAndFollow implements Strategy{
     opponentsLastAction[1] = actions[2];
     int[] possibleUtilities = getPossibleUtilities(actions);
     myLastUtility = possibleUtilities[currentAction];
-    System.out.println("My utility is: " + possibleUtilities[currentAction]);
   }  
   
 }
