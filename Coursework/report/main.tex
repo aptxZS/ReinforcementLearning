@@ -235,26 +235,90 @@ situations and strategies to exploit them and maximize the agent total
 reward.
 
 \section{Evaluation}
-
+The implemented strategies have been extensively tested under
+different scenarios with different players. We chose a game setting
+consisting of $U_{spot} = 6$, meaning that the total reward per round
+is 144. We used the following additional strategies for testing
+purposes:
+\begin{itemize}
+\item \textit{Random}: Strategy that at every round selects an action
+following a uniform distribution.
+\item \textit{Constant}: Strategy the sticks with the same action
+every round. If present, the subscribed number following the constant
+strategy indicates the action number.
+\end{itemize}
+The results were produced by iteratively running the same game setting
+for 50 times with different random seeds and then averaging the
+rewards. We can observe the obtained results in table \ref{result-table}.
 \begin{table}[h!]
 \centering
 \caption{Evaluation results of the 4 implemented strategies}
-\label{tab:my-table}
+\label{result-table}
 \begin{tabular}{l|l|l|l|l}
 Opponents       & Exp3 \; & Egreedy \, & S\&F \;\; & EA$^2$   \\
 \hline
 Constant$_0$ + Constant$_0$ \;& 70.81 & 68.38   & 69.12 & 71.82 \\
 Constant$_0$ + Constant$_1$ & 61.09 & 61.84   & 65.96 & 65.78 \\
-Random + Const    & 47.82 & 50.42   & 50.81 & 53.40 \\
 Random + Random  \;   & 48.18 & 48.29   & 48.20 & 49.27 \\
+Random + Constant    & 47.82 & 50.42   & 50.81 & 53.40 \\
 Random + EA$^2$   & 48.03 & 52.49   & 50.85 & 52.39 \\
-EA$^2$ + EA$^2$ & 47.15 & 49.71   & 49.47 & 48.21 \\
+EA$^2$ + EA$^2$ & 40.35 & 43.89  & 48.82 & 48.21 \\
 Exp3 + Egreedy  & 48.09 & 50.37   & 50.26 & 52.87 \\
 S\&F + EA$^2$       & 41.59 & 42.43   & 45.67 & 46.32 \\
 Constant$_0$ + Constant$_6$ & 36    & 36      & 36    & 36
 \end{tabular}
 \end{table}
 
+We can observe that in an ideal setting where both opponents sit on
+the same spot (Constant$_0$ + Constant$_0$) all the implemented
+strategies score close to the maximum possible points (72). The
+difference from the maximum score can be address to the initial
+wait, for the heuristic-based algorithms, and to the exploration
+phase, for the multi-armed bandit algorithms. Both classes of
+algorithms perform well also against constant strategies playing
+different actions. Heuristic-based algorithms internal knowledge of
+the game allows them to realize the situation faster and sit opposite
+to one of the two constant players without having to test all of the
+possible positions. This explains their better performance in this
+scenario.
+
+Random opponents make all the algorithm perform quite
+poorly and score, approximately, an average of a third of the total
+points. Random strategies, in fact, results in multi-armed bandit
+algorithms weighting all the actions the same and heuristic-based
+algorithms not being able to exploit the opponents behaviour (random
+strategy is both far from the sticker and the follower ideal strategy).
+
+Interesting test scenarios are the ones that include, in the
+opponents, at least a sticker strategy or a cooperative one (Random +
+Constant and Random + EA$^2$). In these cases we can deduct that all
+of the algorithms, except of the Exp3 strategy, exploit this setting
+to coordinate with the right opponent. Exp3 action selection, subject
+to probabilities given by the weight vector, does not allow to
+continuously exploit the best position as Egreedy argmax action
+selection does. We can also note that EA$^2$ player indices allow the
+algorithm to faster convergence to collusion, while Egreedy and
+Stick and Follow strategy are slowed down, respectively, by
+exploration and random opponent selection.
+
+Playing against two opponents that could possibly cooperate is another
+important test scenario (EA$^2$ + EA$^2$ and Stick and Follow +
+EA$^2$). We can observe heuristic-based strategies performing better
+at avoiding the collusion of the two opponents. This is because those
+strategies do not need to try different positions, once detected the
+situation of the utility drop they can immediately react with the best
+strategic action to break the opponents synchronization. 
+
+Overall, from the different scenarios outlined in table
+\ref{result-table}, we can infer that the heuristic-based methods
+perform better than the multi-armed bandit class. Game heuristics
+allow the algorithms to react to different type of situations with
+fixed effective strategies that lead to reward maximization. We also
+have to note that Egreedy algorithm shows a cooperative behaviour in a
+different array of situations even without having an internal game
+knowledge. Results also show that there is not effective strategy
+against two players colluding without changing their strategy or
+considering the third player.
 
 \section{Conclusion}
 
